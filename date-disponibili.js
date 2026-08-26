@@ -2,12 +2,12 @@
  * Configurazione date disponibili per le visite in cantina
  * Altea Illotto - Serdiana
  * 
- * Le date vengono lette da un foglio Google Sheets privato
- * Il foglio può essere condiviso con altre persone per modifiche autonome
+ * Le date vengono lette da un file JSON nel repository GitHub
+ * Per modificare le date, edita il file date-disponibili.json
  */
 
-// ID del foglio Google Sheets pubblicato
-const SHEET_ID = '2PACX-1vT1TUqT_Xr0E7EIaq_Mzq_l90F4-FGt1MGN1HWMYKmrcpSRtq2ojtlmAIknxaQzU6-TySYfK6xpX6iz';
+// URL del file JSON su GitHub Pages (stesso dominio, niente CORS!)
+const DATE_JSON_URL = 'date-disponibili.json';
 
 // Cache per le date disponibili
 let cacheDateDisponibili = null;
@@ -19,96 +19,44 @@ const configurazioneDateVisite = {
     giorniMassimoFuturo: 180,
 };
 
-// Funzione per scaricare le date usando un'immagine come workaround CORS
+// Funzione per scaricare le date dal file JSON
 async function scaricaDateDisponibili() {
+    // Controlla se la cache è ancora valida
     if (cacheDateDisponibili && cacheTimestamp && (Date.now() - cacheTimestamp < CACHE_DURATION)) {
         return cacheDateDisponibili;
     }
 
-    const dateDisponibili = new Map();
-    
-    // UsiamoThings.io come proxy (più affidabile)
-    const sheetUrl = `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?gid=0&single=true&output=tsv`;
-    const url = `https://api.allorigins.win/raw?url=${encodeURIComponent(sheetUrl)}`;
-    
     try {
+        // Aggiungi parametro per evitare cache del browser
+        const url = `${DATE_JSON_URL}?t=${Date.now()}`;
         const response = await fetch(url);
-        const tsvText = await response.text();
-        const righe = tsvText.trim().split('\n');
         
-        console.log('Righe lette dal foglio:', righe.length);
+        if (!response.ok) {
+            throw new Error(`HTTP error: ${response.status}`);
+        }
         
-        // Salta la prima riga (intestazioni)
-        for (let i = 1; i < righe.length; i++) {
-            const colonne = righe[i].split('\t');
-            if (colonne.length >= 2) {
-                const dataRaw = colonne[0].trim();
-                const valore = colonne[1].trim();
-                const disponibile = valore === '1' || valore.toUpperCase() === 'TRUE';
-                
-                // Converti data dal formato DD-MM-YYYY a YYYY-MM-DD
-                let dataFormattata = '';
-                if (dataRaw && dataRaw.includes('-')) {
-                    const parti = dataRaw.split('-');
-                    if (parti.length === 3 && parti[0].length === 2) {
-                        dataFormattata = `${parti[2]}-${parti[1]}-${parti[0]}`;
-                    }
-                }
-                
-                if (dataFormattata && disponibile) {
-                    dateDisponibili.set(dataFormattata, true);
-                    console.log('Data disponibile:', dataFormattata);
-                }
-            }
+        const data = await response.json();
+        const dateDisponibili = new Map();
+        
+        // Carica le date dal JSON
+        if (data && data.dateDisponibili && Array.isArray(data.dateDisponibili)) {
+            data.dateDisponibili.forEach(dataStr => {
+                dateDisponibili.set(dataStr, true);
+                console.log('Data disponibile:', dataStr);
+            });
         }
         
         console.log('Totale date caricate:', dateDisponibili.size);
+        console.log('Ultimo aggiornamento:', data.ultimoAggiornamento || 'N/D');
         
+        // Aggiorna cache
         cacheDateDisponibili = dateDisponibili;
         cacheTimestamp = Date.now();
         
         return dateDisponibili;
     } catch (error) {
-        console.error('Errore caricamento date:', error);
-        
-        // Se c'è un errore, prova con un altro proxy
-        try {
-            const sheetUrl2 = `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?gid=0&single=true&output=tsv`;
-            const url2 = `https://corsproxy.io/?${encodeURIComponent(sheetUrl2)}`;
-            const response2 = await fetch(url2);
-            const tsvText2 = await response2.text();
-            const righe2 = tsvText2.trim().split('\n');
-            
-            for (let i = 1; i < righe2.length; i++) {
-                const colonne = righe2[i].split('\t');
-                if (colonne.length >= 2) {
-                    const dataRaw = colonne[0].trim();
-                    const valore = colonne[1].trim();
-                    const disponibile = valore === '1' || valore.toUpperCase() === 'TRUE';
-                    
-                    let dataFormattata = '';
-                    if (dataRaw && dataRaw.includes('-')) {
-                        const parti = dataRaw.split('-');
-                        if (parti.length === 3 && parti[0].length === 2) {
-                            dataFormattata = `${parti[2]}-${parti[1]}-${parti[0]}`;
-                        }
-                    }
-                    
-                    if (dataFormattata && disponibile) {
-                        dateDisponibili.set(dataFormattata, true);
-                    }
-                }
-            }
-            
-            console.log('Date caricate (backup):', dateDisponibili.size);
-            cacheDateDisponibili = dateDisponibili;
-            cacheTimestamp = Date.now();
-            
-            return dateDisponibili;
-        } catch (error2) {
-            console.error('Errore anche con backup:', error2);
-            return new Map();
-        }
+        console.error('Errore nel caricamento delle date:', error);
+        return new Map();
     }
 }
 
@@ -122,12 +70,15 @@ function isDataDisponibileSync(data) {
     const oggi = new Date();
     oggi.setHours(0, 0, 0, 0);
     
+    // Controlla se la data è nel passato
     if (data < oggi) return false;
     
+    // Controlla anticipo minimo
     const dataMinima = new Date(oggi);
     dataMinima.setDate(dataMinima.getDate() + configurazioneDateVisite.giorniAnticipoMinimo);
     if (data < dataMinima) return false;
     
+    // Controlla massimo futuro
     const dataMassima = new Date(oggi);
     dataMassima.setDate(dataMassima.getDate() + configurazioneDateVisite.giorniMassimoFuturo);
     if (data > dataMassima) return false;
@@ -135,9 +86,24 @@ function isDataDisponibileSync(data) {
     return cacheDateDisponibili.has(dataStr);
 }
 
-// Inizializza all'avvio
+// Funzione per ottenere le date disponibili in un mese (async)
+async function getDateDisponibiliMese(anno, mese) {
+    const dateDisponibili = [];
+    const ultimoGiorno = new Date(anno, mese + 1, 0).getDate();
+    
+    for (let giorno = 1; giorno <= ultimoGiorno; giorno++) {
+        const data = new Date(anno, mese, giorno);
+        if (isDataDisponibileSync(data)) {
+            dateDisponibili.push(giorno);
+        }
+    }
+    
+    return dateDisponibili;
+}
+
+// Inizializza il caricamento delle date all'avvio
 document.addEventListener('DOMContentLoaded', () => {
     scaricaDateDisponibili().then(() => {
-        console.log('Date disponibili caricate dal foglio Google Sheets');
+        console.log('Date disponibili caricate');
     });
 });
