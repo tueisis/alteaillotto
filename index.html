@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Altea Illotto — Vini artigianali da fermentazione spontanea</title>
+    <meta name="description" content="Agricoltura biologica dal 1993, vini naturali e biologici dal 1999, la più lunga produzione di vini biologici in Sardegna.">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+        font-family: 'Altea Illotto';
+        src: url('Alteaillottofont-Regular.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;}
+        :root {
+            --bg: #fcf9f2;
+            --text: #2c2c2c;
+            --text-light: #6b6b6b;
+            --accent: #8C2D32;
+            --accent-hover: #6B1F25;
+            --gold: #EAD3A2;
+            --border: #e0d6c8;
+            --max-w: 1120px;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --font-serif: 'Altea Illotto', 'Playfair Display', Georgia, serif;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+        }
+        img { max-width: 100%; height: auto; display: block; }
+        a { color: inherit; text-decoration: none; }
+        ul { list-style: none; }
+        .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+        /* BTN */
+        .btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--accent); color: #fff; padding: 14px 28px;
+            font-weight: 600; border-radius: 6px; border: none; cursor: pointer;
+            font-size: 0.95rem; transition: .25s ease;
+        }
+        .btn:hover { background: var(--accent-hover); transform: translateY(-1px); }
+        .btn:active { transform: translateY(0); }
+        .btn-outline {
+            background: transparent; color: var(--accent);
+            border: 1px solid var(--accent); padding: 10px 22px;
+        }
+        .btn-outline:hover { background: var(--accent); color: #fff; }
+
+        .section { padding: 90px 0; }
+        .section-dark { background: var(--gold); }
+        .section-title {
+            font-family: var(--font-serif); font-size: 2.4rem; font-weight: 500;
+            margin-bottom: 16px; text-align: center;
+        }
+        .section-sub {
+            text-align: center; color: var(--text-light); font-size: 1.05rem;
+            max-width: 620px; margin: 0 auto 50px;
+        }
+        .title-accent {
+            display: inline-block; position: relative;
+        }
+        .title-accent::after {
+            content: ''; display: block; width: 60px; height: 2px;
+            background: var(--accent); margin: 14px auto 0;
+        }
+
+        /* HEADER */
+        header {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+            background: rgba(252,251,250,.92); backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--border); transition: .3s;
+        }
+        header.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,.06); }
+        .nav-wrap {
+            display: flex; justify-content: space-between; align-items: center;
+            height: 80px;
+        }
+        .logo-link {
+            display: flex; align-items: center; gap: 14px;
+            font-family: var(--font-serif); font-size: 1.5rem;
+            color: var(--accent); font-weight: 600;
+        }
+        .logo-link img { height: 80px; width: auto; }
+        nav { display: flex; align-items: center; gap: 32px; }
+        nav a {
+            font-size: .92rem; font-weight: 500; position: relative;
+            transition: color .2s;
+        }
+        nav a::after {
+            content: ''; position: absolute; bottom: -4px; left: 0; width: 0;
+            height: 2px; background: var(--accent); transition: width .3s;
+        }
+        nav a:hover { color: var(--accent); }
+        nav a:hover::after { width: 100%; }
+        .hamburger {
+            display: none; flex-direction: column; gap: 5px; cursor: pointer;
+            background: none; border: none; padding: 5px;
+        }
+        .hamburger span {
+            display: block; width: 26px; height: 2px; background: var(--text);
+            border-radius: 2px; transition: .3s;
+        }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+
+        /* HERO */
+        .hero {
+            min-height: 100vh; display: flex; align-items: center; position: relative;
+            overflow: hidden; margin-top: 0;
+        }
+        .hero-bg {
+            position: absolute; inset: 0; z-index: 0;
+        }
+        .hero-bg img {
+            width: 100%; height: 100%; object-fit: cover;
+        }
+        .hero-overlay {
+            position: absolute; inset: 0; z-index: 1;
+            background: linear-gradient(135deg, rgba(0,0,0,.45) 0%, rgba(0,0,0,.2) 60%, rgba(0,0,0,.55) 100%);
+        }
+        .hero-content {
+            position: relative; z-index: 2; text-align: center; color: #fff;
+            max-width: 750px; margin: 0 auto; padding: 0 24px;
+        }
+        .hero-content h1 {
+            font-family: var(--font-serif); font-size: 4rem; font-weight: 500;
+            letter-spacing: 1px; margin-bottom: 16px;
+            text-shadow: 0 2px 20px rgba(0,0,0,.3);
+        }
+        .hero-content p {
+            font-size: 1.2rem; opacity: .9; margin-bottom: 36px;
+            font-weight: 300; text-shadow: 0 1px 10px rgba(0,0,0,.2);
+        }
+        .hero-content .btn { font-size: 1rem; padding: 16px 36px; }
+        .hero-scroll {
+            position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+            z-index: 2; color: #fff; opacity: .7; font-size: .85rem;
+            display: flex; flex-direction: column; align-items: center; gap: 6px;
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
+
+        /* CHI SIAMO */
+        .about-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+        }
+        .about-img { border-radius: 8px; overflow: hidden; box-shadow: 0 8px 30px rgba(0,0,0,.08); }
+        .about-img img { width: 100%; height: 500px; object-fit: cover; transition: transform .6s; }
+        .about-img:hover img { transform: scale(1.03); }
+        .about-text h3 {
+            font-family: var(--font-serif); font-size: 2rem; font-weight: 500;
+            margin-bottom: 20px; color: var(--accent);
+        }
+        .about-text p { color: var(--text-light); margin-bottom: 16px; font-size: 1.02rem; line-height: 1.8; }
+        .about-text .signature {
+            font-family: var(--font-serif); font-style: italic; margin-top: 20px;
+            color: var(--accent); font-size: 1.1rem;
+        }
+        .vigneto-text h4 { color: var(--accent); }
+
+        /* VIGNETO E TERRITORIO */
+        .vigneto-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: start;
+        }
+        .vigneto-img { border-radius: 8px; overflow: hidden; box-shadow: 0 8px 30px rgba(0,0,0,.08); }
+        .vigneto-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s; }
+        .vigneto-img:hover img { transform: scale(1.03); }
+        .vigneto-text h4 {
+            font-family: var(--font-serif); font-size: 1.4rem; color: var(--accent); margin: 20px 0 10px;
+        }
+        .vigneto-text h4:first-child { margin-top: 0; }
+        .vigneto-text p { color: var(--text-light); margin-bottom: 12px; font-size: .98rem; }
+
+        /* DOVE TROVARCI */
+        .dove-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px; margin-top: 20px;
+        }
+        .dove-card {
+            background: #fffcf7; border-radius: 8px; padding: 32px 28px;
+            text-align: center; border: 1px solid var(--border);
+            transition: transform .35s ease, box-shadow .35s;
+        }
+        .dove-card:hover { transform: translateY(-4px); box-shadow: 0 8px 25px rgba(0,0,0,.06); }
+        .dove-card .dove-icon {
+            width: 56px; height: 56px; margin: 0 auto 16px; border-radius: 50%;
+            background: var(--gold); display: flex; align-items: center; justify-content: center;
+        }
+        .dove-card .dove-icon svg { width: 26px; height: 26px; color: var(--accent); }
+        .dove-card h4 { font-size: 1.1rem; margin-bottom: 8px; }
+        .dove-card p { color: var(--text-light); font-size: .9rem; margin-bottom: 16px; }
+        .dove-card .dove-link {
+            display: inline-flex; align-items: center; gap: 6px;
+            color: var(--accent); font-weight: 600; font-size: .9rem;
+        }
+        .dove-card:hover .dove-link { text-decoration: underline; }
+        .vini-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 30px; margin-top: 10px;
+        }
+        .vino-card {
+            background: #fffcf7; border-radius: 8px; overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0,0,0,.04); transition: transform .35s ease, box-shadow .35s;
+            border: 1px solid var(--border);
+        }
+        .vino-card:hover { transform: translateY(-6px); box-shadow: 0 12px 35px rgba(0,0,0,.08); }
+        .vino-img {
+            height: 320px; overflow: hidden; background: var(--gold);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .vino-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s; }
+        .vino-card:hover .vino-img img { transform: scale(1.06); }
+        .vino-body { padding: 24px; text-align: center; }
+        .vino-body h3 { font-size: 1.25rem; margin-bottom: 4px; }
+        .vino-body .vino-denom {
+            font-size: .78rem; color: var(--accent); font-weight: 500; margin-bottom: 10px;
+        }
+        .vino-body p { color: var(--text-light); font-size: .9rem; margin-bottom: 16px; }
+
+        /* SCHEDA TECNICA - TABS */
+        .scheda-tabs {
+            display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+            margin-bottom: 40px;
+        }
+        .scheda-tab {
+            padding: 10px 22px; border: 1px solid var(--border); border-radius: 6px;
+            background: transparent; cursor: pointer; font-family: var(--font-sans);
+            font-size: .88rem; font-weight: 500; color: var(--text-light);
+            transition: .25s ease;
+        }
+        .scheda-tab:hover { border-color: var(--accent); color: var(--accent); }
+        .scheda-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+        .scheda-panel { display: none; }
+        .scheda-panel.active { display: block; }
+        .scheda-wrap {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: start;
+        }
+        .scheda-img {
+            border-radius: 8px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,.06);
+        }
+        .scheda-img img { width: 100%; height: 580px; object-fit: cover; }
+        .scheda-content h3 {
+            font-family: var(--font-serif); font-size: 1.6rem; color: var(--accent); margin-bottom: 4px;
+        }
+        .scheda-content .vino-denom {
+            font-size: .82rem; text-transform: uppercase; letter-spacing: 1px;
+            color: var(--accent); font-weight: 600; margin-bottom: 6px; display: block;
+        }
+        .scheda-content .vino-bio {
+            font-size: .82rem; color: var(--text-light); margin-bottom: 20px;
+        }
+        .scheda-content .desc { color: var(--text-light); font-style: italic; margin-bottom: 24px; }
+        .tech-table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+        .tech-table td { padding: 10px 0; border-bottom: 1px solid var(--border); }
+        .tech-table td:first-child { font-weight: 600; width: 38%; color: var(--text); }
+        .tech-table td:last-child { color: var(--text-light); }
+
+        /* GALLERIA */
+        .gallery-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+        }
+        .gallery-grid .gal-item {
+            border-radius: 6px; overflow: hidden; cursor: pointer;
+        }
+        .gallery-grid .gal-item img {
+            width: 100%; height: 280px; object-fit: cover;
+            transition: transform .5s;
+        }
+        .gallery-grid .gal-item:hover img { transform: scale(1.05); }
+        .gal-tall { grid-row: span 2; }
+        .gal-tall img { height: 100%; }
+        .gal-wide { grid-column: span 2; }
+
+        /* CONTATTI */
+        .contatti-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 50px;
+        }
+        .contatti-info h4 {
+            font-family: var(--font-serif); font-size: 1.3rem; margin-bottom: 16px;
+            color: var(--accent);
+        }
+        .contatti-info p { color: var(--text-light); margin-bottom: 8px; font-size: .95rem; }
+        .contatti-info .cont-item { display: flex; gap: 12px; margin-bottom: 16px; align-items: flex-start; }
+        .contatti-info .cont-item svg { flex-shrink: 0; margin-top: 3px; }
+        .contatti-info .social-links { display: flex; gap: 12px; margin-top: 20px; }
+        .contatti-info .social-links a {
+            display: flex; align-items: center; justify-content: center;
+            width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--border);
+            transition: .25s;
+        }
+        .contatti-info .social-links a:hover { border-color: var(--accent); background: var(--accent); }
+        .contatti-info .social-links a:hover svg { color: #fff; }
+        .contatti-info .social-links svg { width: 20px; height: 20px; transition: .25s; }
+
+        .cont-form { display: flex; flex-direction: column; gap: 16px; }
+        .cont-form input, .cont-form textarea {
+            width: 100%; padding: 14px 16px; border: 1px solid var(--border);
+            border-radius: 6px; font-family: var(--font-sans); font-size: .95rem;
+            background: #fffcf7; outline: none; transition: border .2s;
+        }
+        .cont-form input:focus, .cont-form textarea:focus { border-color: var(--accent); }
+        .cont-form textarea { min-height: 130px; resize: vertical; }
+
+        .map-wrap { margin-top: 50px; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 15px rgba(0,0,0,.04); }
+        .map-wrap iframe { width: 100%; height: 350px; border: 0; display: block; }
+
+        /* FOOTER */
+        footer {
+            background: #1e1e1e; color: #b3b3b3; padding: 60px 0 30px;
+        }
+        .footer-grid {
+            display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px;
+        }
+        footer h4 {
+            color: #fff; font-size: .95rem; text-transform: uppercase;
+            letter-spacing: 1px; margin-bottom: 16px;
+        }
+        footer p, footer a { font-size: .88rem; line-height: 1.8; }
+        footer a:hover { color: #fff; }
+        footer .footer-logo {
+            font-family: var(--font-serif); font-size: 1.2rem; color: #fff; margin-bottom: 10px;
+        }
+        footer .footer-logo span { color: var(--accent); }
+        .footer-bottom {
+            margin-top: 40px; padding-top: 20px; border-top: 1px solid #333;
+            text-align: center; font-size: .82rem; color: #666;
+        }
+
+        /* HLINE DIVIDER */
+        .hline {
+            width: 100%; overflow: hidden; line-height: 0; background: var(--gold);
+        }
+        .hline img {
+            display: block; width: 100%; height: 80px; object-fit: cover;
+            object-position: center;
+        }
+
+        /* FADE IN */
+        .fade-in { opacity: 0; transform: translateY(30px); transition: opacity .7s ease, transform .7s ease; }
+        .fade-in.show { opacity: 1; transform: translateY(0); }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .about-grid, .vigneto-grid, .scheda-wrap, .contatti-grid { grid-template-columns: 1fr; gap: 40px; }
+            .vigneto-img img { height: 350px; }
+            .gallery-grid { grid-template-columns: 1fr 1fr; }
+            .gallery-grid .gal-item img { height: 220px; }
+            .gal-tall { grid-row: auto; }
+            .gal-wide { grid-column: auto; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+            .dove-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 768px) {
+            .hero-content h1 { font-size: 2.6rem; }
+            .hero-content p { font-size: 1rem; }
+            .section-title { font-size: 2rem; }
+            section { padding: 60px 0; }
+            .hamburger { display: flex; }
+            nav { position: fixed; top: 80px; left: 0; width: 100%;
+                background: rgba(252,251,250,.97); backdrop-filter: blur(8px);
+                flex-direction: column; padding: 20px 24px; gap: 18px;
+                border-bottom: 1px solid var(--border);
+                transform: translateY(-120%); opacity: 0; transition: .35s ease;
+                pointer-events: none; align-items: flex-start;
+            }
+            nav.open { transform: translateY(0); opacity: 1; pointer-events: auto; }
+            nav a { font-size: 1rem; }
+            .vino-img { height: 250px; }
+            .scheda-img img { height: 350px; }
+        }
+        @media (max-width: 500px) {
+            .gallery-grid { grid-template-columns: 1fr; }
+            .dove-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .hero-content h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header id="header">
+        <div class="container nav-wrap">
+            <a href="#" class="logo-link">
+                <img src="logo.png" alt="Altea Illotto" loading="lazy">
+                Altea Illotto
+            </a>
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+            <nav id="nav">
+                <a href="#chi-siamo">Chi Siamo</a>
+                <a href="#vigneto">Vigneto</a>
+                <a href="#vini">I Vini</a>
+                <a href="#scheda">Schede</a>
+                <a href="#dove">Dove Trovarci</a>
+                <a href="#galleria">Galleria</a>
+                <a href="#contatti">Contatti</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero" id="hero">
+        <div class="hero-bg">
+            <img src="PXL_20260619_184831384.jpg" alt="Vigneto Altea Illotto - Serdiana">
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Altea Illotto</h1>
+            <p>Agricolture biologica dal 1993, vini naturali e biologici dal 1999, la più lunga produzione di vini biologici in Sardegna.</p>
+            <a href="#vini" class="btn">Scopri le Etichette</a>
+        </div>
+        <div class="hero-scroll">
+            <span>Scopri di più</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
+        </div>
+    </section>
+
+    <div class="hline"><img src="alteaillotto_hline.png" alt="" aria-hidden="true" loading="lazy"></div>
+
+    <!-- CHI SIAMO -->
+    <section class="section" id="chi-siamo">
+        <div class="container">
+            <h2 class="section-title title-accent">Chi Siamo</h2>
+            <p class="section-sub">La nostra storia, la nostra terra, la nostra visione del vino.</p>
+            <div class="about-grid fade-in">
+                <div class="about-img">
+                    <img src="Maurizio e Adele Altea Illotto.JPG" alt="Monica Altea Illotto - Invaiatura nel vigneto">
+                </div>
+                <div class="about-text">
+                    <h3>Il Vino secondo Natura</h3>
+                    <p>Il vino è come uno specchio. Riflette sia chi lo produce, che chi lo consuma. Questo pensano Maurizio Altea e Adele Illotto, che ritrovano se stessi e il loro territorio nei vini fortemente identitari, che essi producono.</p>
+                    <p>Cinque ettari di vigneto ricadenti nella denominazione Sibiola IGT, la delimitazione di territorio più piccola in Sardegna, che comprende solo i terreni più vocati dei comuni di Serdiana e Soleminis, in provincia di Cagliari.</p>
+                    <p>Vitigni autoctoni e tradizionali (Cannonau, Carignano, Monica, Muristellu, Girò, Barbera sardo per le rosse, Nuragus, Nasco, Vermentino, Moscato e Malvasia Sarda per le bianche) allevati principalmente ad alberello e Guyot Poussard (chiamato nella zona carriadroxia cun s'appicamantella), su terreni bianchi, argilloso marnosi, nelle basse colline di Serdiana.</p>
+                    <p>La scelta di Maurizio(agronomo) e Adele (agronoma ed enologa) di attuare una viticoltura rispettosa dell'ambiente viene da lontano: infatti già dal 1993 tutta la loro azienda segue le pratiche della agricoltura biologica.</p>
+                    <p>Nessun prodotto chimico di sintesi in nessuna fase della coltivazione. Per mantenere la fertilità del terreno si pratica il sovescio e l'inerbimento temporaneo, nessun apporto proveniente dall'esterno della propria azienda agricola.</p>
+                    <p>Raccolta rigorosamente manuale in piccole cassette forate, con selezione dei grappoli, in modo che l'uva arrivi in cantina sana e integra.</p>
+                    <p>In vinificazione fermentazioni spontanee (perchè convinti che anche i lieviti autoctoni naturali contribuiscano all'espressione del territorio), e solforosa a bassissime dosi (meno della metà di quella consentita dal disciplinare del vino biologico).</p>
+                    <p>Nessun consulente esterno né nel vigneto, né in cantina.</p>
+                    <p>Anche la vendita è gestita personalmente, rapporti diretti con chi ama i loro vini. Per ridurre l'impatto ambientale niente più brochure, ma solo comunicazioni digitali.</p>
+                    <p>Maurizio e Adele ci tengono a precisare "i nostri vini sono assolutamente nostri dalla vigna alla bottiglia. La motivazione che ci ha portato a diventare vignaioli è stata la nostra passione per i vini (abbiamo una discreta esperienza come degustatori) e la volontà di produrre dei vini che esprimessero l'amore per il nostro territorio e il rispetto per l'ambiente"</p>
+                    <p>Nei loro vini riconosciamo la volontà di resistere alla dilagante omologazione del gusto. Ricordiamo il particolarissimo Altea Bianco, la prima bottiglia nel 2000, da uve provenienti da un vitigno raro come il Nasco, con l'aggiunta di Vermentino e Nuragus, il corposo Altea Rosso, un armonioso corale di Cannonau, Carignano, Monica e Muristellu e dal 2013 il leggiadro Papilio a base Nuragus, ottenuto da un vigneto di quasi 60 anni. Infine, una anticpazione, dal 2017 sarà in vendita In fundo, un vino da meditazione a base di Moscato sardo, ottenuto con una vendemmia tardiva.</p>
+                    <p>Vini assolutamente da assaggiare, ma soprattutto da bere.</p>
+                    <div class="signature">( da Guida al vino critico di Officina enoica )</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="hline"><img src="alteaillotto_hline.png" alt="" aria-hidden="true" loading="lazy"></div>
+
+    <!-- VIGNETO E TERRITORIO -->
+    <section class="section section-dark" id="vigneto">
+        <div class="container">
+            <h2 class="section-title title-accent">Vigneto e Territorio</h2>
+            <p class="section-sub">I nostri vigneti a Serdiana, nel cuore della Sardegna.</p>
+            <div class="vigneto-grid fade-in">
+                <div class="vigneto-text">
+                    <h4>Il Vigneto</h4>
+                    <p>Vinifichiamo esclusivamente le uve dei nostri vigneti. I nostri vigneti si trovano nelle basse colline di Serdiana, su terreni bianchi, argilloso marnosi. Ricadono nel territorio delimitato dall'IGT Sibiola, la delimitazione di territorio più piccola della Sardegna (che comprende i terreni più vocati del comune di Serdiana).</p>
+                    <p>Noi abbiamo scelto di utilizzare per i nostri vini questa denominazione che mette meglio in evidenza il territorio rispetto alle DOC presenti in Sardegna, che comprendono regioni ben più vaste, con territori molto eterogenei.</p>
+                    <p>Dal 1993 coltiviamo i nostri vigneti con i metodi dell'Agricoltura Biologica, che esclude l'utilizzo di prodotti chimici di sintesi.</p>
+                    <h4>Il Territorio</h4>
+                    <p>Le campagne di Serdiana (CA) celebri per la loro vocazione alla coltivazione della vite ospitano i nostri vigneti, circondati da siepi d'assenzio e finocchio selvatico. Il comune di Serdiana a 20 km a Nord di Cagliari, a 171 mslm occupa la posizione più pianeggiante del Parteolla.</p>
+                    <p>Attorno al paese, basse colline accolgono piante di mirto, lentischio, querce, ginepri e olivastri. Nella valle di S'Isca Manna è possibile trovare numerose piccole sorgenti. Nel suo territorio è presente uno stagno salato, "Su Staini Saliu", di grande interesse naturalistico, dove d'inverno sostano i fenicotteri rosa.</p>
+                    <p>A pochi chilometri dal paese c'è la chiesetta romanica di Santa Maria di Sibiola. Eretta nella prima metà del secolo XII dai Benedettini, rappresenta un piccolo gioiello di architettura religiosa, situata in una piccola altura circondata da vigneti.</p>
+                </div>
+                <div class="vigneto-img">
+                    <img src="PXL_20260619_184818389.jpg" alt="Vigneto Altea Illotto - Serdiana">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="hline"><img src="alteaillotto_hline.png" alt="" aria-hidden="true" loading="lazy"></div>
+
+    <!-- I VINI -->
+    <section class="section" id="vini">
+        <div class="container">
+            <h2 class="section-title title-accent">I Nostri Vini</h2>
+            <p class="section-sub">Sei etichette, sei espressioni autentiche del territorio sardo, da vitigni autoctoni e tradizionali.</p>
+            <div class="vini-grid">
+                <div class="vino-card fade-in">
+                    <div class="vino-img">
+                        <img src="alteabianco.jpg" alt="Altea Bianco">
+                    </div>
+                    <div class="vino-body">
+                        <h3>Altea Bianco</h3>
+                        <div class="vino-denom">Sibiola IGT</div>
+                        <p>Nasco (95%) e Nuragus (5%). La prima bottiglia nel 2000, un vino unico da un vitigno raro. Sfumature oro, grande struttura, marino e sapido.</p>
+                        <a href="#scheda" class="btn btn-outline" data-wine="bianco">Vedi Scheda</a>
+                    </div>
+                </div>
+                <div class="vino-card fade-in">
+                    <div class="vino-img">
+                        <img src="papilio.jpg" alt="Papilio">
+                    </div>
+                    <div class="vino-body">
+                        <h3>Papilio</h3>
+                        <div class="vino-denom">Sibiola IGT</div>
+                        <p>Nuragus (95%) e Nasco (5%) da un vigneto di oltre 60 anni. Giallo dorato, ricco di tannini, un bianco che sembra un rosso travestito.</p>
+                        <a href="#scheda" class="btn btn-outline" data-wine="papilio">Vedi Scheda</a>
+                    </div>
+                </div>
+                <div class="vino-card fade-in">
+                    <div class="vino-img">
+                        <img src="altearosa.jpg" alt="Papilio">
+                    </div>
+                    <div class="vino-body">
+                        <h3>Altea Rosa</h3>
+                        <div class="vino-denom">Sibiola IGT</div>
+                        <p>Carignano vinificato in bianco. Colore rosa intenso, sapore fruttato.</p>
+                        <a href="#scheda" class="btn btn-outline" data-wine="papilio">Vedi Scheda</a>
+                    </div>
+                </div>
+                <div class="vino-card fade-in">
+                    <div class="vino-img">
+                        <img src="duo.jpg" alt="Duo">
+                    </div>
+                    <div class="vino-body">
+                        <h3>Duo</h3>
+                        <div class="vino-denom">Sibiola IGT</div>
+                        <p>Monica e Barbera Sarda. Il nostro nuovo rosso, imbottigliato per la prima volta nel 2022. Già una grande personalità.</p>
+                        <a href="#scheda" class="btn btn-outline" data-wine="duo">Vedi Scheda</a>
+                    </div>
+                </div>
+                <div class="vino-card fade-in">
+                    <div class="vino-img">
+                        <img src="altearosso.jpg" alt="Altea Rosso">
+                    </div>
+                    <div class="vino-body">
+                        <h3>Altea Rosso</h3>
+                        <div class="vino-denom">Sibiola IGT</div>
+                        <p>Cannonau, Carignano, Monica e Barbera Sarda. Corale di quattro vitigni, rosso rubino, morbido e di grande equilibrio.</p>
+                        <a href="#scheda" class="btn btn-outline" data-wine="rosso">Vedi Scheda</a>
+                    </div>
+                </div>
+                <div class="vino-card fade-in">
+                    <div class="vino-img">
+                        <img src="in%20fundo.jpg" alt="In fundo">
+                    </div>
+                    <div class="vino-body">
+                        <h3>In fundo</h3>
+                        <div class="vino-denom">Sibiola IGT</div>
+                        <p>Vendemmia tardiva di Moscato. Giallo dorato luminoso, note di miele e albicocca. Dolcezza non invadente in perfetto equilibrio con la salinità.</p>
+                        <a href="#scheda" class="btn btn-outline" data-wine="fundo">Vedi Scheda</a>
+                    </div>
+                </div>
+                <div class="vino-card fade-in">
+                    <div class="vino-img">
+                        <img src="rinasco.jpg" alt="Rinasco">
+                    </div>
+                    <div class="vino-body">
+                        <h3>Rinasco</h3>
+                        <div class="vino-denom">Sibiola IGT</div>
+                        <p>Vendemmia tardiva di Nasco. Appassimento sulla pianta, macerazione sulle bucce, affinamento in botte. Solo 500 bottiglie.</p>
+                        <a href="#scheda" class="btn btn-outline" data-wine="rinasco">Vedi Scheda</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="hline"><img src="alteaillotto_hline.png" alt="" aria-hidden="true" loading="lazy"></div>
+
+    <!-- SCHEDE TECNICHE -->
+    <section class="section section-dark" id="scheda">
+        <div class="container">
+            <h2 class="section-title title-accent">Schede Tecniche</h2>
+            <p class="section-sub">Tutti i dati di ogni nostra annata, nel massimo della trasparenza.</p>
+
+            <div class="scheda-tabs" id="schedaTabs">
+                <button class="scheda-tab active" data-target="bianco">Altea Bianco</button>
+                <button class="scheda-tab" data-target="papilio">Papilio</button>
+                <button class="scheda-tab" data-target="rosa">Altea Rosa</button>
+                <button class="scheda-tab" data-target="rosso">Altea Rosso</button>
+                <button class="scheda-tab" data-target="duo">Duo</button>
+                <button class="scheda-tab" data-target="fundo">In fundo</button>
+                <button class="scheda-tab" data-target="rinasco">Rinasco</button>
+            </div>
+
+            <!-- Altea Bianco -->
+            <div class="scheda-panel active" id="panel-bianco">
+                <div class="scheda-wrap fade-in">
+                    <div class="scheda-img">
+                        <img src="alteabianco.jpg" alt="Altea Bianco">
+                    </div>
+                    <div class="scheda-content">
+                        <h3>Altea Bianco</h3>
+                        <span class="vino-denom">Sibiola IGT — 2022</span>
+                        <span class="vino-bio">Vino Biologico certificato ICEA</span>
+                        <p class="desc">Sfumature oro, di grande struttura, fruttato al naso il primo anno e poi ricco di sentori di muschio e macchia mediterranea. In bocca è lungo, sapido, marino.</p>
+                        <table class="tech-table">
+                            <tr><td>Uve</td><td>Nasco 95%, Nuragus 5%</td></tr>
+                            <tr><td>Bottiglie prodotte</td><td>1800</td></tr>
+                            <tr><td>Vendemmia</td><td>Metà agosto</td></tr>
+                            <tr><td>Resa</td><td>30 q/ha</td></tr>
+                            <tr><td>Lieviti</td><td>Naturali (fermentazione spontanea)</td></tr>
+                            <tr><td>Macerazione</td><td>24 ore</td></tr>
+                            <tr><td>Affinamento</td><td>12 mesi sui lieviti in piccole vasche in acciaio</td></tr>
+                            <tr><td>Imbottigliamento</td><td>Giugno 2023</td></tr>
+                            <tr><td>Gradi alcolici</td><td>14,50% vol</td></tr>
+                            <tr><td>SO₂ totale</td><td>&lt;10 mg/l — Senza solfiti aggiunti</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Papilio -->
+            <div class="scheda-panel" id="panel-papilio">
+                <div class="scheda-wrap fade-in">
+                    <div class="scheda-img">
+                        <img src="papilio.jpg" alt="Papilio">
+                    </div>
+                    <div class="scheda-content">
+                        <h3>Papilio</h3>
+                        <span class="vino-denom">Sibiola IGT — 2022</span>
+                        <span class="vino-bio">Vino Biologico certificato ICEA</span>
+                        <p class="desc">Giallo paglierino intenso tendente al dorato, molto particolare per la sua ricchezza in tannini: pare quasi un rosso travestito da bianco. Leggermente petillant.</p>
+                        <table class="tech-table">
+                            <tr><td>Uve</td><td>Nuragus 95%, Nasco 5%</td></tr>
+                            <tr><td>Bottiglie prodotte</td><td>450</td></tr>
+                            <tr><td>Vendemmia</td><td>Fine agosto</td></tr>
+                            <tr><td>Resa</td><td>20 q/ha</td></tr>
+                            <tr><td>Lieviti</td><td>Naturali (fermentazione spontanea)</td></tr>
+                            <tr><td>Macerazione</td><td>24 ore</td></tr>
+                            <tr><td>Affinamento</td><td>In botte di ceramica</td></tr>
+                            <tr><td>Imbottigliamento</td><td>Aprile 2022</td></tr>
+                            <tr><td>Gradi alcolici</td><td>13,50% vol</td></tr>
+                            <tr><td>Estratto secco</td><td>28 g/l</td></tr>
+                            <tr><td>SO₂ totale</td><td>&lt;10 mg/l — Senza solfiti aggiunti</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Altea Rosa -->
+            <div class="scheda-panel" id="panel-rosa">
+                <div class="scheda-wrap fade-in">
+                    <div class="scheda-img">
+                        <img src="altearosa.jpg" alt="Altea Rosa">
+                    </div>
+                    <div class="scheda-content">
+                        <h3>Altea Rosa</h3>
+                        <span class="vino-denom">Sibiola IGT — 2023</span>
+                        <span class="vino-bio">Vino Biologico certificato ICEA</span>
+                        <p class="desc">Un rosato non comune, da pressatura soffice. Profumi primari dell'uva senza forzature, beva profonda e grande persistenza.</p>
+                        <table class="tech-table">
+                            <tr><td>Uve</td><td>Carignano</td></tr>
+                            <tr><td>Bottiglie prodotte</td><td>420</td></tr>
+                            <tr><td>Vendemmia</td><td>Prima settimana di settembre</td></tr>
+                            <tr><td>Resa</td><td>30 ql/ha</td></tr>
+                            <tr><td>Lieviti</td><td>Naturali (fermentazione spontanea)</td></tr>
+                            <tr><td>Macerazione</td><td>Breve contatto con le bucce in pressa</td></tr>
+                            <tr><td>Affinamento</td><td>9 mesi in piccola vasca d'acciaio</td></tr>
+                            <tr><td>Imbottigliamento</td><td>Maggio 2024</td></tr>
+                            <tr><td>Gradi alcolici</td><td>13,5% vol</td></tr>
+                            <tr><td>SO₂ totale</td><td>20 mg/l</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Altea Rosso -->
+            <div class="scheda-panel" id="panel-rosso">
+                <div class="scheda-wrap fade-in">
+                    <div class="scheda-img">
+                        <img src="altearosso.jpg" alt="Altea Rosso">
+                    </div>
+                    <div class="scheda-content">
+                        <h3>Altea Rosso</h3>
+                        <span class="vino-denom">Sibiola IGT — 2021</span>
+                        <span class="vino-bio">Vino Biologico certificato ICEA</span>
+                        <p class="desc">Corale di quattro vitigni che si esaltano a vicenda. Rosso rubino con riflessi granati, profumo intenso di frutti di bosco e confetture, morbido e di grande equilibrio.</p>
+                        <table class="tech-table">
+                            <tr><td>Uve</td><td>Cannonau, Monica, Carignano, Barbera Sardo</td></tr>
+                            <tr><td>Bottiglie prodotte</td><td>3000</td></tr>
+                            <tr><td>Vendemmia</td><td>Prima settimana di settembre</td></tr>
+                            <tr><td>Resa</td><td>40 q/ha</td></tr>
+                            <tr><td>Lieviti</td><td>Naturali (fermentazione spontanea)</td></tr>
+                            <tr><td>Macerazione</td><td>8 giorni</td></tr>
+                            <tr><td>Affinamento</td><td>14 mesi in piccole vasche d'acciaio sui lieviti + 2 mesi in bottiglia</td></tr>
+                            <tr><td>Imbottigliamento</td><td>Giugno 2022</td></tr>
+                            <tr><td>Gradi alcolici</td><td>14,50% vol</td></tr>
+                            <tr><td>Estratto secco</td><td>35,5 g/l</td></tr>
+                            <tr><td>SO₂ totale</td><td>30 mg/l</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Duo -->
+            <div class="scheda-panel" id="panel-duo">
+                <div class="scheda-wrap fade-in">
+                    <div class="scheda-img">
+                        <img src="duo.jpg" alt="Duo">
+                    </div>
+                    <div class="scheda-content">
+                        <h3>Duo</h3>
+                        <span class="vino-denom">Sibiola IGT — 2022</span>
+                        <span class="vino-bio">Vino Biologico certificato ICEA</span>
+                        <p class="desc">Il nostro nuovo vino rosso, imbottigliato per la prima volta a fine maggio 2022. Monica e Barbera Sarda da un unico appezzamento in località Su Pranu. Solo 500 bottiglie.</p>
+                        <table class="tech-table">
+                            <tr><td>Uve</td><td>Monica e Barbera Sarda</td></tr>
+                            <tr><td>Bottiglie prodotte</td><td>500</td></tr>
+                            <tr><td>Vendemmia</td><td>Prima settimana di settembre</td></tr>
+                            <tr><td>Resa</td><td>42 ql/ha</td></tr>
+                            <tr><td>Lieviti</td><td>Naturali (fermentazione spontanea)</td></tr>
+                            <tr><td>Macerazione</td><td>9 giorni</td></tr>
+                            <tr><td>Affinamento</td><td>In piccola vasca d'acciaio</td></tr>
+                            <tr><td>Imbottigliamento</td><td>Maggio 2023</td></tr>
+                            <tr><td>Gradi alcolici</td><td>14,00% vol</td></tr>
+                            <tr><td>Estratto secco</td><td>35 g/l</td></tr>
+                            <tr><td>SO₂ totale</td><td>29 mg/l</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- In fundo -->
+            <div class="scheda-panel" id="panel-fundo">
+                <div class="scheda-wrap fade-in">
+                    <div class="scheda-img">
+                        <img src="in%20fundo.jpg" alt="In fundo">
+                    </div>
+                    <div class="scheda-content">
+                        <h3>In fundo</h3>
+                        <span class="vino-denom">Sibiola IGT</span>
+                        <span class="vino-bio">Vino Biologico certificato ICEA</span>
+                        <p class="desc">Vendemmia tardiva di Moscato, imbottigliato per la prima volta ad aprile 2017. Di un luminoso giallo dorato, con note decise di miele e frutta secca, in particolare albicocca. Grande eleganza, dolcezza in perfetto equilibrio con la salinità.</p>
+                        <table class="tech-table">
+                            <tr><td>Uve</td><td>Moscato (vendemmia tardiva)</td></tr>
+                            <tr><td>Vendemmia</td><td>Tardiva, raccolta a mano in cassette forate</td></tr>
+                            <tr><td>Lieviti</td><td>Naturali (fermentazione spontanea)</td></tr>
+                            <tr><td>Affinamento</td><td>In piccola vasca d'acciaio</td></tr>
+                            <tr><td>Imbottigliamento</td><td>Aprile 2017</td></tr>
+                            <tr><td>Gradi alcolici</td><td>Vino da meditazione</td></tr>
+                            <tr><td>Note</td><td>Nell'etichetta un disegno di Michele Cubadda della Chiesetta di Santa Maria di Sibiola</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rinasco -->
+            <div class="scheda-panel" id="panel-rinasco">
+                <div class="scheda-wrap fade-in">
+                    <div class="scheda-img">
+                        <img src="rinasco.jpg" alt="Rinasco">
+                    </div>
+                    <div class="scheda-content">
+                        <h3>Rinasco</h3>
+                        <span class="vino-denom">Sibiola IGT</span>
+                        <span class="vino-bio">Vino Biologico certificato ICEA</span>
+                        <p class="desc">Vendemmia tardiva di uve Nasco, lasciate leggermente appassire sulla pianta, raccolte a mano, macerate per una settimana sulle bucce e affinate in botte per un anno. Solo 500 bottiglie.</p>
+                        <table class="tech-table">
+                            <tr><td>Uve</td><td>Nasco (vendemmia tardiva)</td></tr>
+                            <tr><td>Bottiglie prodotte</td><td>500</td></tr>
+                            <tr><td>Vendemmia</td><td>Tardiva, raccolta a mano in piccole cassette forate</td></tr>
+                            <tr><td>Lieviti</td><td>Naturali (fermentazione spontanea)</td></tr>
+                            <tr><td>Macerazione</td><td>Una settimana sulle bucce</td></tr>
+                            <tr><td>Affinamento</td><td>Un anno in botte</td></tr>
+                            <tr><td>Imbottigliamento</td><td>Settembre 2022</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="hline"><img src="alteaillotto_hline.png" alt="" aria-hidden="true" loading="lazy"></div>
+
+    <!-- DOVE TROVARCI -->
+    <section class="section" id="dove">
+        <div class="container">
+            <h2 class="section-title title-accent">Dove Trovarci</h2>
+            <p class="section-sub">I nostri vini sono disponibili online, presso i nostri distributori e nei locali che li selezionano. Oppure, direttamente da noi.</p>
+            <div class="dove-grid">
+                <a href="dove.html#acquista-online" class="dove-card fade-in">
+                    <div class="dove-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                    </div>
+                    <h4>Acquista Online</h4>
+                    <p>Scopri e ordina i nostri vini su Bevisardo, il portale dedicato alle cantine artigianali sarde.</p>
+                    <span class="dove-link">Vai alla sezione &rarr;</span>
+                </a>
+                <a href="dove.html#ristoranti" class="dove-card fade-in">
+                    <div class="dove-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    </div>
+                    <h4>Ristoranti &amp; Locali</h4>
+                    <p>I nostri vini sono selezionati da ristoranti, enoteche e wine bar in Sardegna e in Italia. Contattaci per conoscere il punto vendita più vicino a te.</p>
+                    <span class="dove-link">Vai alla sezione &rarr;</span>
+                </a>
+                <a href="dove.html#contatto-diretto" class="dove-card fade-in">
+                    <div class="dove-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    </div>
+                    <h4>Contatto Diretto</h4>
+                    <p>Preferiamo il rapporto diretto con chi ama i nostri vini. Scrivici per ordinare, organizzare una visita o ricevere informazioni.</p>
+                    <span class="dove-link">Vai alla sezione &rarr;</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <div class="hline"><img src="alteaillotto_hline.png" alt="" aria-hidden="true" loading="lazy"></div>
+
+    <!-- GALLERIA -->
+    <section class="section section-dark" id="galleria">
+        <div class="container">
+            <h2 class="section-title title-accent">Galleria</h2>
+            <p class="section-sub">Scorci di vita in vigna e in cantina, tra Serdiana e Sibiola.</p>
+            <div class="gallery-grid">
+                <div class="gal-item fade-in">
+                    <img src="PXL_20260619_184818389.jpg" alt="Vigneto Altea Illotto">
+                </div>
+                <div class="gal-item fade-in">
+                    <img src="monica%20invaiatura.jpg" alt="Monica nel vigneto - invaiatura">
+                </div>
+                <div class="gal-item fade-in">
+                    <img src="PXL_20260619_184831384.jpg" alt="Paesaggio Serdiana">
+                </div>
+                <div class="gal-item fade-in">
+                    <img src="PXL_20260625_080533886~3.jpg" alt="Bottiglia Altea">
+                </div>
+                <div class="gal-item fade-in">
+                    <img src="Digitalizzato_20260628-2325-05.jpg" alt="Etichetta Altea Illotto">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="hline"><img src="alteaillotto_hline.png" alt="" aria-hidden="true" loading="lazy"></div>
+
+    <!-- CONTATTI -->
+    <section class="section" id="contatti">
+        <div class="container">
+            <h2 class="section-title title-accent">Contattaci</h2>
+            <p class="section-sub">Preferiamo il contatto diretto per raccontarvi i nostri vini. Scriveteci o passate a trovarci.</p>
+            <div class="contatti-grid fade-in">
+                <div class="contatti-info">
+                    <h4>Altea Illotto</h4>
+                    <div class="cont-item">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                        <div>
+                            <p><strong>Località Sibiola</strong><br>Serdiana, Sud Sardegna</p>
+                        </div>
+                    </div>
+                    <div class="cont-item">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                        <p><a href="mailto:info@alteaillotto.com">info@alteaillotto.com</a></p>
+                    </div>
+                    <div class="cont-item">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                        <p><a href="tel:+393396773628">+39 339 6773 628</a></p>
+                    </div>
+                    <div class="social-links">
+                        <a href="https://wa.me/393396773628" target="_blank" aria-label="WhatsApp">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                        </a>
+                        <a href="https://www.instagram.com/alteaillotto" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                        </a>
+                        <a href="https://www.facebook.com/alteaillotto" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                        </a>
+                    </div>
+                </div>
+                <form class="cont-form" action="#" method="post">
+                    <input type="text" name="nome" placeholder="Nome e Cognome" required>
+                    <input type="email" name="email" placeholder="Email" required>
+                    <input type="text" name="oggetto" placeholder="Oggetto">
+                    <textarea name="messaggio" placeholder="Scrivici il tuo messaggio..." required></textarea>
+                    <button type="submit" class="btn">Invia Messaggio</button>
+                </form>
+            </div>
+            <div class="map-wrap">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3084.2780399489047!2d9.158939000000002!3d39.37258299999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12e74b628f00be33%3A0x19362fbb56510d71!2sAltea%20Illotto%20Azienda%20Vitivinicola!5e0!3m2!1sit!2sit!4v1787651093621!5m2!1sit!2sit" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <div class="footer-logo"><span>Altea</span> Illotto</div>
+                    <p>Vitigni di territorio, fermentazioni spontanee.<br>Vini artigianali non filtrati, nati a Serdiana, località Sibiola.</p>
+                </div>
+                <div>
+                    <h4>Link</h4>
+                    <p><a href="#chi-siamo">Chi Siamo</a></p>
+                    <p><a href="#vigneto">Vigneto</a></p>
+                    <p><a href="#vini">I Vini</a></p>
+                    <p><a href="#scheda">Schede</a></p>
+                    <p><a href="#dove">Dove Trovarci</a></p>
+                    <p><a href="#galleria">Galleria</a></p>
+                    <p><a href="#contatti">Contatti</a></p>
+                </div>
+                <div>
+                    <h4>Contatti</h4>
+                    <p>Serdiana (CA), Sardegna</p>
+                    <p><a href="mailto:info@alteaillotto.com">info@alteaillotto.com</a></p>
+                    <p><a href="tel:+393396773628">+39 339 6773 628</a></p>
+                </div>
+                <div>
+                    <h4>Orari Visite</h4>
+                    <p>Su appuntamento</p>
+                    <p>Scrivici per organizzare<br>una degustazione</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2026 Altea Illotto — Azienda Agricola Artigianale. Tutti i diritti riservati.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Hamburger menu
+        const hamburger = document.getElementById('hamburger');
+        const nav = document.getElementById('nav');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            nav.classList.toggle('open');
+        });
+        document.querySelectorAll('nav a').forEach(a => {
+            a.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                nav.classList.remove('open');
+            });
+        });
+
+        // Header scroll effect
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            header.classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        // Fade-in on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show');
+                }
+            });
+        }, { threshold: 0.15 });
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // Tabs schede tecniche
+        const tabs = document.querySelectorAll('.scheda-tab');
+        const panels = document.querySelectorAll('.scheda-panel');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                panels.forEach(p => p.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById('panel-' + tab.dataset.target).classList.add('active');
+            });
+        });
+
+        // Click "Vedi Scheda" from vini grid → switch tab
+        document.querySelectorAll('[data-wine]').forEach(btn => {
+            btn.addEventListener('click', e => {
+                e.preventDefault();
+                const target = btn.dataset.wine;
+                const tab = document.querySelector(`.scheda-tab[data-target="${target}"]`);
+                if (tab) {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    panels.forEach(p => p.classList.remove('active'));
+                    tab.classList.add('active');
+                    document.getElementById('panel-' + target).classList.add('active');
+                    document.getElementById('scheda').scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Form
+        document.querySelector('.cont-form')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Grazie per averci scritto! Ti risponderemo al più presto.');
+            this.reset();
+        });
+    </script>
+</body>
+</html>

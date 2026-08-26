@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Altea Illotto — Visitateci</title>
+    <meta name="description" content="Prenota una visita in cantina ad Altea Illotto. Degustazioni in vigna, tour guidati e incontri con i produttori a Serdiana.">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+        font-family: 'Altea Illotto';
+        src: url('Alteaillottofont-Regular.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;}
+        :root {
+            --bg: #fcf9f2;
+            --text: #2c2c2c;
+            --text-light: #6b6b6b;
+            --accent: #8C2D32;
+            --accent-hover: #6B1F25;
+            --gold: #EAD3A2;
+            --border: #e0d6c8;
+            --max-w: 1120px;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --font-serif: 'Altea Illotto', 'Playfair Display', Georgia, serif;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+        }
+        img { max-width: 100%; height: auto; display: block; }
+        a { color: inherit; text-decoration: none; }
+        ul { list-style: none; }
+        .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+        /* BTN */
+        .btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--accent); color: #fff; padding: 14px 28px;
+            font-weight: 600; border-radius: 6px; border: none; cursor: pointer;
+            font-size: 0.95rem; transition: .25s ease;
+        }
+        .btn:hover { background: var(--accent-hover); transform: translateY(-1px); }
+        .btn:active { transform: translateY(0); }
+        .btn-outline {
+            background: transparent; color: var(--accent);
+            border: 1px solid var(--accent); padding: 10px 22px;
+        }
+        .btn-outline:hover { background: var(--accent); color: #fff; }
+
+        .section { padding: 90px 0; }
+        .section-dark { background: var(--gold); }
+        .section-title {
+            font-family: var(--font-serif); font-size: 2.4rem; font-weight: 500;
+            margin-bottom: 16px; text-align: center;
+        }
+        .section-sub {
+            text-align: center; color: var(--text-light); font-size: 1.05rem;
+            max-width: 620px; margin: 0 auto 50px;
+        }
+        .title-accent {
+            display: inline-block; position: relative;
+        }
+        .title-accent::after {
+            content: ''; display: block; width: 60px; height: 2px;
+            background: var(--accent); margin: 14px auto 0;
+        }
+
+        /* HEADER */
+        header {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+            background: rgba(252,251,250,.92); backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--border); transition: .3s;
+        }
+        header.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,.06); }
+        .nav-wrap {
+            display: flex; justify-content: space-between; align-items: center;
+            height: 80px;
+        }
+        .logo-link {
+            display: flex; align-items: center; gap: 14px;
+            font-family: var(--font-serif); font-size: 1.5rem;
+            color: var(--accent); font-weight: 600;
+        }
+        .logo-link img { height: 80px; width: auto; }
+        nav { display: flex; align-items: center; gap: 32px; }
+        nav a {
+            font-size: .92rem; font-weight: 500; position: relative;
+            transition: color .2s;
+        }
+        nav a::after {
+            content: ''; position: absolute; bottom: -4px; left: 0; width: 0;
+            height: 2px; background: var(--accent); transition: width .3s;
+        }
+        nav a:hover { color: var(--accent); }
+        nav a:hover::after { width: 100%; }
+        .hamburger {
+            display: none; flex-direction: column; gap: 5px; cursor: pointer;
+            background: none; border: none; padding: 5px;
+        }
+        .hamburger span {
+            display: block; width: 26px; height: 2px; background: var(--text);
+            border-radius: 2px; transition: .3s;
+        }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+
+        /* HERO VISITE */
+        .hero-visite {
+            min-height: 60vh; display: flex; align-items: center; position: relative;
+            overflow: hidden; margin-top: 80px;
+        }
+        .hero-visite .hero-bg {
+            position: absolute; inset: 0; z-index: 0;
+        }
+        .hero-visite .hero-bg img {
+            width: 100%; height: 100%; object-fit: cover;
+        }
+        .hero-visite .hero-overlay {
+            position: absolute; inset: 0; z-index: 1;
+            background: linear-gradient(135deg, rgba(0,0,0,.5) 0%, rgba(0,0,0,.3) 60%, rgba(0,0,0,.55) 100%);
+        }
+        .hero-visite .hero-content {
+            position: relative; z-index: 2; text-align: center; color: #fff;
+            max-width: 750px; margin: 0 auto; padding: 0 24px;
+        }
+        .hero-visite .hero-content h1 {
+            font-family: var(--font-serif); font-size: 3.5rem; font-weight: 500;
+            letter-spacing: 1px; margin-bottom: 16px;
+            text-shadow: 0 2px 20px rgba(0,0,0,.3);
+        }
+        .hero-visite .hero-content p {
+            font-size: 1.2rem; opacity: .9; margin-bottom: 0;
+            font-weight: 300; text-shadow: 0 1px 10px rgba(0,0,0,.2);
+        }
+
+        /* VISITE CARD */
+        .visite-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px; margin-top: 20px;
+        }
+        .visita-card {
+            background: #fffcf7; border-radius: 8px; padding: 36px 32px;
+            text-align: center; border: 1px solid var(--border);
+            transition: transform .35s ease, box-shadow .35s;
+        }
+        .visita-card:hover { transform: translateY(-4px); box-shadow: 0 8px 25px rgba(0,0,0,.06); }
+        .visita-card .visita-icon {
+            width: 64px; height: 64px; margin: 0 auto 20px; border-radius: 50%;
+            background: var(--gold); display: flex; align-items: center; justify-content: center;
+        }
+        .visita-card .visita-icon svg { width: 30px; height: 30px; color: var(--accent); }
+        .visita-card h3 { 
+            font-family: var(--font-serif); font-size: 1.4rem; margin-bottom: 12px; 
+            color: var(--accent);
+        }
+        .visita-card .durata {
+            font-size: .85rem; color: var(--text-light); font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px;
+        }
+        .visita-card p { color: var(--text-light); font-size: .95rem; line-height: 1.8; margin-bottom: 16px; }
+        .visita-card ul {
+            text-align: left; margin: 20px 0; padding-left: 0;
+        }
+        .visita-card ul li {
+            color: var(--text-light); font-size: .9rem; margin-bottom: 10px;
+            padding-left: 24px; position: relative;
+        }
+        .visita-card ul li::before {
+            content: '✓'; position: absolute; left: 0; color: var(--accent);
+            font-weight: 700;
+        }
+
+        /* INFO BOX */
+        .info-box {
+            background: var(--gold); border-radius: 8px; padding: 40px;
+            margin: 50px auto; max-width: 800px; text-align: center;
+        }
+        .info-box h3 {
+            font-family: var(--font-serif); font-size: 1.6rem; color: var(--accent);
+            margin-bottom: 20px;
+        }
+        .info-box p { color: var(--text); font-size: 1rem; line-height: 1.8; margin-bottom: 12px; }
+        .info-box .highlight {
+            font-weight: 600; color: var(--accent);
+        }
+
+        /* CONTATTI INFO */
+        .contatti-info {
+            max-width: 600px; margin: 40px auto; text-align: center;
+        }
+        .contatti-info h4 {
+            font-family: var(--font-serif); font-size: 1.3rem; margin-bottom: 16px;
+            color: var(--accent);
+        }
+        .contatti-info p { color: var(--text-light); margin-bottom: 8px; font-size: .95rem; }
+        .contatti-info .cont-item { 
+            display: flex; gap: 12px; margin-bottom: 16px; align-items: flex-start;
+            justify-content: center;
+        }
+        .contatti-info .cont-item svg { flex-shrink: 0; margin-top: 3px; }
+        .contatti-info .social-links { 
+            display: flex; gap: 12px; margin-top: 20px; justify-content: center;
+        }
+        .contatti-info .social-links a {
+            display: flex; align-items: center; justify-content: center;
+            width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--border);
+            transition: .25s;
+        }
+        .contatti-info .social-links a:hover { border-color: var(--accent); background: var(--accent); }
+        .contatti-info .social-links a:hover svg { color: #fff; }
+        .contatti-info .social-links svg { width: 20px; height: 20px; transition: .25s; }
+
+        .cont-form { 
+            display: flex; flex-direction: column; gap: 16px; 
+            max-width: 600px; margin: 0 auto;
+        }
+        .cont-form input, .cont-form textarea, .cont-form select {
+            width: 100%; padding: 14px 16px; border: 1px solid var(--border);
+            border-radius: 6px; font-family: var(--font-sans); font-size: .95rem;
+            background: #fffcf7; outline: none; transition: border .2s;
+        }
+        .cont-form input:focus, .cont-form textarea:focus, .cont-form select:focus { 
+            border-color: var(--accent); 
+        }
+        .cont-form textarea { min-height: 130px; resize: vertical; }
+
+        /* CALENDARIO */
+        .calendario-container {
+            background: #fffcf7; border: 1px solid var(--border);
+            border-radius: 8px; padding: 24px; margin-bottom: 16px;
+        }
+        .calendario-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 20px;
+        }
+        .calendario-header h4 {
+            font-family: var(--font-serif); font-size: 1.3rem;
+            color: var(--accent); margin: 0;
+        }
+        .calendario-nav {
+            display: flex; gap: 12px;
+        }
+        .calendario-nav button {
+            background: var(--accent); color: #fff; border: none;
+            width: 36px; height: 36px; border-radius: 50%;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: .25s;
+        }
+        .calendario-nav button:hover { background: var(--accent-hover); }
+        .calendario-nav button:disabled {
+            background: var(--border); cursor: not-allowed; opacity: 0.5;
+        }
+        .calendario-weekdays {
+            display: grid; grid-template-columns: repeat(7, 1fr);
+            gap: 8px; margin-bottom: 8px;
+        }
+        .calendario-weekdays div {
+            text-align: center; font-size: .85rem; font-weight: 600;
+            color: var(--text-light); padding: 8px 0;
+        }
+        .calendario-days {
+            display: grid; grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+        .calendario-day {
+            aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+            border-radius: 6px; font-size: .9rem; cursor: pointer;
+            background: #fff; border: 1px solid var(--border);
+            transition: .2s;
+            position: relative;
+        }
+        .calendario-day:hover:not(.disabled):not(.empty) {
+            background: var(--gold); border-color: var(--accent);
+        }
+        .calendario-day.selected {
+            background: var(--accent); color: #fff; border-color: var(--accent);
+            font-weight: 600;
+        }
+        .calendario-day.disabled {
+            background: #f5f5f5; color: #ccc; cursor: not-allowed;
+            text-decoration: line-through;
+        }
+        .calendario-day.empty {
+            background: transparent; border: none; cursor: default;
+        }
+        .calendario-day.today:not(.disabled) {
+            border: 2px solid var(--accent);
+        }
+        .data-selezionata-display {
+            text-align: center; margin-top: 16px; padding: 12px;
+            background: var(--gold); border-radius: 6px;
+            font-weight: 600; color: var(--accent);
+            display: none;
+        }
+        .data-selezionata-display.visible {
+            display: block;
+        }
+        .calendario-legenda {
+            display: flex; flex-wrap: wrap; gap: 16px; justify-content: center;
+            margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border);
+            font-size: .85rem;
+        }
+        .calendario-legenda-item {
+            display: flex; align-items: center; gap: 6px;
+        }
+        .calendario-legenda-box {
+            width: 20px; height: 20px; border-radius: 4px; border: 1px solid var(--border);
+        }
+        .calendario-legenda-box.disponibile { background: #fff; }
+        .calendario-legenda-box.selezionata { background: var(--accent); }
+        .calendario-legenda-box.non-disponibile { background: #f5f5f5; }
+
+        /* FOOTER */
+        footer {
+            background: #1e1e1e; color: #b3b3b3; padding: 60px 0 30px;
+        }
+        .footer-grid {
+            display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px;
+        }
+        footer h4 {
+            color: #fff; font-size: .95rem; text-transform: uppercase;
+            letter-spacing: 1px; margin-bottom: 16px;
+        }
+        footer p, footer a { font-size: .88rem; line-height: 1.8; }
+        footer a:hover { color: #fff; }
+        footer .footer-logo {
+            font-family: var(--font-serif); font-size: 1.2rem; color: #fff; margin-bottom: 10px;
+        }
+        footer .footer-logo span { color: var(--accent); }
+        .footer-bottom {
+            margin-top: 40px; padding-top: 20px; border-top: 1px solid #333;
+            text-align: center; font-size: .82rem; color: #666;
+        }
+
+        /* HLINE DIVIDER */
+        .hline {
+            width: 100%; overflow: hidden; line-height: 0; background: var(--gold);
+        }
+        .hline img {
+            display: block; width: 100%; height: 80px; object-fit: cover;
+            object-position: center;
+        }
+
+        /* FADE IN */
+        .fade-in { opacity: 0; transform: translateY(30px); transition: opacity .7s ease, transform .7s ease; }
+        .fade-in.show { opacity: 1; transform: translateY(0); }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+            .visite-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .hero-visite .hero-content h1 { font-size: 2.4rem; }
+            .hero-visite .hero-content p { font-size: 1rem; }
+            .section-title { font-size: 2rem; }
+            .section { padding: 60px 0; }
+            .hamburger { display: flex; }
+            nav { position: fixed; top: 80px; left: 0; width: 100%;
+                background: rgba(252,251,250,.97); backdrop-filter: blur(8px);
+                flex-direction: column; padding: 20px 24px; gap: 18px;
+                border-bottom: 1px solid var(--border);
+                transform: translateY(-120%); opacity: 0; transition: .35s ease;
+                pointer-events: none; align-items: flex-start;
+            }
+            nav.open { transform: translateY(0); opacity: 1; pointer-events: auto; }
+            nav a { font-size: 1rem; }
+            .info-box { padding: 30px 24px; }
+        }
+        @media (max-width: 500px) {
+            .footer-grid { grid-template-columns: 1fr; }
+            .hero-visite .hero-content h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header id="header">
+        <div class="container nav-wrap">
+            <a href="index.html" class="logo-link">
+                <img src="logo.png" alt="Altea Illotto" loading="lazy">
+                Altea Illotto
+            </a>
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+            <nav id="nav">
+                <a href="index.html#chi-siamo">Chi Siamo</a>
+                <a href="index.html#vigneto">Vigneto</a>
+                <a href="index.html#vini">I Vini</a>
+                <a href="index.html#scheda">Schede</a>
+                <a href="dove.html">Dove Trovarci</a>
+                <a href="index.html#galleria">Galleria</a>
+                <a href="index.html#contatti">Contatti</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero-visite">
+        <div class="hero-bg">
+            <img src="PXL_20260619_184831384.jpg" alt="Vigneto Altea Illotto - Serdiana">
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Visitateci</h1>
+            <p>Un'esperienza autentica tra vigneto e cantina, per scoprire la nostra filosofia e degustare i nostri vini.</p>
+        </div>
+    </section>
+
+    <div class="hline"><img src="alteaillotto_hline.png" alt="" aria-hidden="true" loading="lazy"></div>
+
+    <!-- TIPOLOGIE DI VISITA -->
+    <section class="section" id="visite">
+        <div class="container">
+            <h2 class="section-title title-accent">Tipologie di Visita</h2>
+            <p class="section-sub">Scegliete l'esperienza che preferite. Ogni visita è un momento di incontro autentico con chi produce il vino.</p>
+            
+            <div class="visite-grid">
+                <div class="visita-card fade-in">
+                    <div class="visita-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                            <circle cx="12" cy="7" r="4"/>
+                        </svg>
+                    </div>
+                    <h3>Visita Classica</h3>
+                    <div class="durata">Durata: 1h 30min circa</div>
+                    <p>Un tour completo per conoscere la nostra storia, il vigneto e la cantina, con degustazione guidata dei nostri vini.</p>
+                    <ul>
+                        <li>Passeggiata nel vigneto</li>
+                        <li>Visita della cantina</li>
+                        <li>Degustazione di 3 vini</li>
+                        <li>Racconto diretto dai produttori</li>
+                    </ul>
+                </div>
+
+                <div class="visita-card fade-in">
+                    <div class="visita-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                            <path d="M2 17l10 5 10-5"/>
+                            <path d="M2 12l10 5 10-5"/>
+                        </svg>
+                    </div>
+                    <h3>Degustazione Completa</h3>
+                    <div class="durata">Durata: 2h circa</div>
+                    <p>Per chi vuole approfondire. Tour della cantina e degustazione estesa di tutte le nostre etichette, con abbinamenti.</p>
+                    <ul>
+                        <li>Tour completo vigneto e cantina</li>
+                        <li>Degustazione di tutte le etichette</li>
+                        <li>Abbinamenti con prodotti locali</li>
+                        <li>Approfondimenti sulle tecniche</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="info-box fade-in">
+                <h3>Le Visite sono su Appuntamento</h3>
+                <p>Per garantirvi un'esperienza autentica e personalizzata, tutte le visite si svolgono <span class="highlight">esclusivamente su prenotazione</span>.</p>
+                <p>Maurizio e Adele vi accoglieranno personalmente e vi racconteranno la loro storia, rispondendo a tutte le vostre curiosità.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="hline"><img src="alteaillotto_hline.png" alt="" aria-hidden="true" loading="lazy"></div>
+
+    <!-- PRENOTA LA TUA VISITA -->
+    <section class="section section-dark" id="prenota">
+        <div class="container">
+            <h2 class="section-title title-accent">Prenota la Tua Visita</h2>
+            <p class="section-sub">Compila il form oppure contattaci direttamente. Ti risponderemo al più presto per confermare data e orario.</p>
+            
+            <div class="contatti-info fade-in">
+                <h4>Contatti Diretti</h4>
+                <div class="cont-item">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    <div><p><strong>Località Sibiola</strong><br>Serdiana, Sud Sardegna</p></div>
+                </div>
+                <div class="cont-item">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    <p><a href="mailto:info@alteaillotto.com">info@alteaillotto.com</a></p>
+                </div>
+                <div class="cont-item">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    <p><a href="tel:+39393396773628">+39 339 6773 628</a></p>
+                </div>
+                <div class="social-links">
+                    <a href="https://wa.me/393396773628" target="_blank" aria-label="WhatsApp">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    </a>
+                    <a href="https://www.instagram.com/alteaillotto" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                    </a>
+                    <a href="https://www.facebook.com/alteaillotto" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                    </a>
+                    </a>
+                </div>
+            </div>
+
+            <form class="cont-form fade-in" action="#" method="post">
+                <input type="text" name="nome" placeholder="Nome e Cognome *" required>
+                <input type="tel" name="telefono" placeholder="Telefono *" required>
+                <input type="email" name="email" placeholder="Email">
+                
+                <select name="tipo_visita" required>
+                    <option value="">Tipo di visita *</option>
+                    <option value="classica">Visita Classica (1h 30min)</option>
+                    <option value="completa">Degustazione Completa (2h)</option>
+                    <option value="vendemmia">Visita in Vendemmia (solo settembre)</option>
+                </select>
+                
+                <input type="number" name="persone" placeholder="Numero di persone *" min="1" max="20" required>
+                
+                <!-- Calendario per selezione data -->
+                <div class="calendario-container">
+                    <div class="calendario-header">
+                        <h4 id="calendarioMeseAnno">Agosto 2026</h4>
+                        <div class="calendario-nav">
+                            <button type="button" id="prevMonth" aria-label="Mese precedente">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="15 18 9 12 15 6"/>
+                                </svg>
+                            </button>
+                            <button type="button" id="nextMonth" aria-label="Mese successivo">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="9 18 15 12 9 6"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="calendario-weekdays">
+                        <div>Lun</div>
+                        <div>Mar</div>
+                        <div>Mer</div>
+                        <div>Gio</div>
+                        <div>Ven</div>
+                        <div>Sab</div>
+                        <div>Dom</div>
+                    </div>
+                    <div class="calendario-days" id="calendarioDays"></div>
+                    <div class="data-selezionata-display" id="dataSelezionataDisplay">
+                        Data selezionata: <span id="dataSelezionataText"></span>
+                    </div>
+                    <div class="calendario-legenda">
+                        <div class="calendario-legenda-item">
+                            <div class="calendario-legenda-box disponibile"></div>
+                            <span>Disponibile</span>
+                        </div>
+                        <div class="calendario-legenda-item">
+                            <div class="calendario-legenda-box selezionata"></div>
+                            <span>Selezionata</span>
+                        </div>
+                        <div class="calendario-legenda-item">
+                            <div class="calendario-legenda-box non-disponibile"></div>
+                            <span>Non disponibile</span>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" name="data_preferita" id="dataPreferitaInput" required>
+                
+                <textarea name="messaggio" placeholder="Note o richieste particolari..."></textarea>
+                
+                <button type="submit" class="btn">Invia Richiesta di Prenotazione</button>
+            </form>
+
+            <p class="section-sub" style="margin-top: 30px; margin-bottom: 0;">
+                Ti risponderemo entro 24 ore per confermare disponibilità e dettagli della visita.
+            </p>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <div class="footer-logo"><span>Altea</span> Illotto</div>
+                    <p>Vitigni di territorio, fermentazioni spontanee.<br>Vini artigianali non filtrati, nati a Serdiana, località Sibiola.</p>
+                </div>
+                <div>
+                    <h4>Link</h4>
+                    <p><a href="index.html">Home</a></p>
+                    <p><a href="index.html#chi-siamo">Chi Siamo</a></p>
+                    <p><a href="index.html#vini">I Vini</a></p>
+                    <p><a href="dove.html">Dove Trovarci</a></p>
+                    <p><a href="visitateci.html">Visitateci</a></p>
+                </div>
+                <div>
+                    <h4>Contatti</h4>
+                    <p>Serdiana (CA), Sardegna</p>
+                    <p><a href="mailto:info@alteaillotto.com">info@alteaillotto.com</a></p>
+                    <p><a href="tel:+393396773628">+39 339 6773 628</a></p>
+                </div>
+                <div>
+                    <h4>Orari Visite</h4>
+                    <p>Su appuntamento</p>
+                    <p>Scrivici per organizzare<br>una degustazione</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2026 Altea Illotto — Azienda Agricola Artigianale. Tutti i diritti riservati.
+            </div>
+        </div>
+    </footer>
+
+    <script src="date-disponibili.js"></script>
+    <script>
+        // Hamburger menu
+        const hamburger = document.getElementById('hamburger');
+        const nav = document.getElementById('nav');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            nav.classList.toggle('open');
+        });
+        document.querySelectorAll('nav a').forEach(a => {
+            a.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                nav.classList.remove('open');
+            });
+        });
+
+        // Header scroll effect
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            header.classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        // Fade-in on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show');
+                }
+            });
+        }, { threshold: 0.15 });
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // CALENDARIO
+        let meseCorrente = new Date().getMonth();
+        let annoCorrente = new Date().getFullYear();
+        let dataSelezionata = null;
+
+        const nomiMesi = [
+            'Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno',
+            'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'
+        ];
+
+        function renderCalendario() {
+            const calendarioDays = document.getElementById('calendarioDays');
+            const calendarioMeseAnno = document.getElementById('calendarioMeseAnno');
+            
+            // Aggiorna intestazione
+            calendarioMeseAnno.textContent = `${nomiMesi[meseCorrente]} ${annoCorrente}`;
+            
+            // Calcola primo giorno del mese e numero di giorni
+            const primoGiorno = new Date(annoCorrente, meseCorrente, 1);
+            const ultimoGiorno = new Date(annoCorrente, meseCorrente + 1, 0);
+            const giorniMese = ultimoGiorno.getDate();
+            
+            // Calcola offset (lunedì = 0, domenica = 6)
+            let offset = primoGiorno.getDay() - 1;
+            if (offset < 0) offset = 6;
+            
+            // Pulisci calendario
+            calendarioDays.innerHTML = '';
+            
+            // Aggiungi celle vuote per offset
+            for (let i = 0; i < offset; i++) {
+                const emptyDay = document.createElement('div');
+                emptyDay.className = 'calendario-day empty';
+                calendarioDays.appendChild(emptyDay);
+            }
+            
+            // Data di oggi
+            const oggi = new Date();
+            oggi.setHours(0, 0, 0, 0);
+            
+            // Aggiungi giorni del mese
+            for (let giorno = 1; giorno <= giorniMese; giorno++) {
+                const data = new Date(annoCorrente, meseCorrente, giorno);
+                const disponibile = isDataDisponibile(data);
+                
+                const dayDiv = document.createElement('div');
+                dayDiv.className = 'calendario-day';
+                dayDiv.textContent = giorno;
+                
+                // Controlla se è oggi
+                if (data.getTime() === oggi.getTime()) {
+                    dayDiv.classList.add('today');
+                }
+                
+                // Controlla se è selezionata
+                if (dataSelezionata && 
+                    dataSelezionata.getDate() === giorno &&
+                    dataSelezionata.getMonth() === meseCorrente &&
+                    dataSelezionata.getFullYear() === annoCorrente) {
+                    dayDiv.classList.add('selected');
+                }
+                
+                if (disponibile) {
+                    dayDiv.addEventListener('click', () => selezionaData(data));
+                } else {
+                    dayDiv.classList.add('disabled');
+                }
+                
+                calendarioDays.appendChild(dayDiv);
+            }
+            
+            // Gestisci pulsanti navigazione
+            const oggi2 = new Date();
+            const meseOggi = oggi2.getMonth();
+            const annoOggi = oggi2.getFullYear();
+            const prevBtn = document.getElementById('prevMonth');
+            const nextBtn = document.getElementById('nextMonth');
+            
+            // Disabilita prev se siamo nel mese corrente
+            prevBtn.disabled = (meseCorrente === meseOggi && annoCorrente === annoOggi);
+            
+            // Disabilita next se siamo oltre il limite massimo
+            const meseMassimo = new Date();
+            meseMassimo.setDate(meseMassimo.getDate() + configurazioneDateVisite.giorniMassimoFuturo);
+            nextBtn.disabled = (annoCorrente > meseMassimo.getFullYear() || 
+                               (annoCorrente === meseMassimo.getFullYear() && meseCorrente >= meseMassimo.getMonth()));
+        }
+
+        function selezionaData(data) {
+            dataSelezionata = data;
+            
+            // Aggiorna campo hidden
+            const dataStr = data.toISOString().split('T')[0];
+            document.getElementById('dataPreferitaInput').value = dataStr;
+            
+            // Mostra data selezionata
+            const display = document.getElementById('dataSelezionataDisplay');
+            const textSpan = document.getElementById('dataSelezionataText');
+            const giorniSettimana = ['Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'];
+            
+            const dataFormattata = `${giorniSettimana[data.getDay()]} ${data.getDate()} ${nomiMesi[data.getMonth()]} ${data.getFullYear()}`;
+            textSpan.textContent = dataFormattata;
+            display.classList.add('visible');
+            
+            // Ri-renderizza per aggiornare la selezione
+            renderCalendario();
+        }
+
+        document.getElementById('prevMonth').addEventListener('click', () => {
+            meseCorrente--;
+            if (meseCorrente < 0) {
+                meseCorrente = 11;
+                annoCorrente--;
+            }
+            renderCalendario();
+        });
+
+        document.getElementById('nextMonth').addEventListener('click', () => {
+            meseCorrente++;
+            if (meseCorrente > 11) {
+                meseCorrente = 0;
+                annoCorrente++;
+            }
+            renderCalendario();
+        });
+
+        // Inizializza calendario
+        renderCalendario();
+
+        // Form
+        document.querySelector('.cont-form')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Verifica che sia stata selezionata una data
+            if (!dataSelezionata) {
+                alert('Per favore seleziona una data disponibile dal calendario.');
+                return;
+            }
+            
+            alert('Grazie per la tua richiesta! Ti contatteremo al più presto per confermare la prenotazione.');
+            this.reset();
+            dataSelezionata = null;
+            document.getElementById('dataSelezionataDisplay').classList.remove('visible');
+            renderCalendario();
+        });
+    </script>
+</body>
+</html>
