@@ -2,12 +2,14 @@
  * Configurazione date disponibili per le visite in cantina
  * Altea Illotto - Serdiana
  * 
- * Le date vengono lette da un file JSON nel repository GitHub
- * Per modificare le date, edita il file date-disponibili.json
+ * Le date vengono lette direttamente da Google Sheets tramite Google Apps Script (Soluzione B).
+ * Se la connessione fallisce, viene usato date-disponibili.json come fallback.
  */
 
-// URL del file JSON su GitHub Pages (stesso dominio, niente CORS!)
-const DATE_JSON_URL = 'date-disponibili.json';
+// Endpoint Google Apps Script
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbza_LiiQj6B8aik9KQzqLTCCUfrjDqSqhQcUOEaWb4Rs6cMAMS6hUgfg5s0UdSyW1LN/exec';
+// Fallback JSON locale
+const FALLBACK_JSON_URL = 'date-disponibili.json';
 
 // Cache per le date disponibili
 let cacheDateDisponibili = null;
@@ -19,45 +21,83 @@ const configurazioneDateVisite = {
     giorniMassimoFuturo: 180,
 };
 
-// Funzione per scaricare le date dal file JSON
+// Converte un oggetto Date locale nel formato "YYYY-MM-DD"
+function formattaDataYYYYMMDD(data) {
+    if (!data || !(data instanceof Date) || isNaN(data.getTime())) return null;
+    const anno = data.getFullYear();
+    const mese = String(data.getMonth() + 1).padStart(2, '0');
+    const giorno = String(data.getDate()).padStart(2, '0');
+    return `${anno}-${mese}-${giorno}`;
+}
+
+// Normalizza varie rappresentazioni di stringhe/date (es. ISO UTC da Apps Script) in formato "YYYY-MM-DD"
+function normalizzaDataStr(dataInput) {
+    if (!dataInput) return null;
+    if (typeof dataInput === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(dataInput)) {
+        return dataInput;
+    }
+    const d = new Date(dataInput);
+    if (isNaN(d.getTime())) return null;
+    // Aggiungi 12 ore per bilanciare l'offset UTC -> ora locale italiana (CEST/CET)
+    const dLocale = new Date(d.getTime() + (12 * 60 * 60 * 1000));
+    const anno = dLocale.getUTCFullYear();
+    const mese = String(dLocale.getUTCMonth() + 1).padStart(2, '0');
+    const giorno = String(dLocale.getUTCDate()).padStart(2, '0');
+    return `${anno}-${mese}-${giorno}`;
+}
+
+// Funzione per scaricare le date da Google Apps Script (con fallback JSON)
 async function scaricaDateDisponibili() {
     // Controlla se la cache è ancora valida
     if (cacheDateDisponibili && cacheTimestamp && (Date.now() - cacheTimestamp < CACHE_DURATION)) {
         return cacheDateDisponibili;
     }
 
+    const dateDisponibili = new Map();
+
     try {
-        // Aggiungi parametro per evitare cache del browser
-        const url = `${DATE_JSON_URL}?t=${Date.now()}`;
-        const response = await fetch(url);
-        
+        const response = await fetch(APPS_SCRIPT_URL);
         if (!response.ok) {
             throw new Error(`HTTP error: ${response.status}`);
         }
         
         const data = await response.json();
-        const dateDisponibili = new Map();
         
-        // Carica le date dal JSON
         if (data && data.dateDisponibili && Array.isArray(data.dateDisponibili)) {
-            data.dateDisponibili.forEach(dataStr => {
-                dateDisponibili.set(dataStr, true);
-                console.log('Data disponibile:', dataStr);
+            data.dateDisponibili.forEach(item => {
+                const dataFormatted = normalizzaDataStr(item);
+                if (dataFormatted) {
+                    dateDisponibili.set(dataFormatted, true);
+                }
             });
         }
-        
-        console.log('Totale date caricate:', dateDisponibili.size);
-        console.log('Ultimo aggiornamento:', data.ultimoAggiornamento || 'N/D');
-        
-        // Aggiorna cache
-        cacheDateDisponibili = dateDisponibili;
-        cacheTimestamp = Date.now();
-        
-        return dateDisponibili;
+        console.log('Date caricate da Google Apps Script. Totale:', dateDisponibili.size);
     } catch (error) {
-        console.error('Errore nel caricamento delle date:', error);
-        return new Map();
+        console.warn('Errore Apps Script Google Sheets, avvio fallback su JSON locale:', error);
+        try {
+            const fallbackRes = await fetch(`${FALLBACK_JSON_URL}?t=${Date.now()}`);
+            if (fallbackRes.ok) {
+                const fallbackData = await fallbackRes.json();
+                if (fallbackData && fallbackData.dateDisponibili && Array.isArray(fallbackData.dateDisponibili)) {
+                    fallbackData.dateDisponibili.forEach(item => {
+                        const dataFormatted = normalizzaDataStr(item);
+                        if (dataFormatted) {
+                            dateDisponibili.set(dataFormatted, true);
+                        }
+                    });
+                }
+                console.log('Date caricate da fallback JSON locale. Totale:', dateDisponibili.size);
+            }
+        } catch (fallbackErr) {
+            console.error('Errore anche nel caricamento del JSON fallback:', fallbackErr);
+        }
     }
+
+    // Aggiorna cache
+    cacheDateDisponibili = dateDisponibili;
+    cacheTimestamp = Date.now();
+    
+    return dateDisponibili;
 }
 
 // Funzione sincrona per verificare disponibilità (usa cache)
@@ -66,7 +106,9 @@ function isDataDisponibileSync(data) {
         return false;
     }
     
-    const dataStr = data.toISOString().split('T')[0];
+    const dataStr = formattaDataYYYYMMDD(data);
+    if (!dataStr) return false;
+
     const oggi = new Date();
     oggi.setHours(0, 0, 0, 0);
     
@@ -104,6 +146,6 @@ async function getDateDisponibiliMese(anno, mese) {
 // Inizializza il caricamento delle date all'avvio
 document.addEventListener('DOMContentLoaded', () => {
     scaricaDateDisponibili().then(() => {
-        console.log('Date disponibili caricate');
+        console.log('Date disponibili pronte');
     });
 });

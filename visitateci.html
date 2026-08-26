@@ -746,7 +746,7 @@
             dataSelezionata = data;
             
             // Aggiorna campo hidden
-            const dataStr = data.toISOString().split('T')[0];
+            const dataStr = formattaDataYYYYMMDD(data);
             document.getElementById('dataPreferitaInput').value = dataStr;
             
             // Mostra data selezionata
