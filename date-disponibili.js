@@ -9,7 +9,8 @@
 const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT1TUqT_Xr0E7EIaq_Mzq_l90F4-FGt1MGN1HWMYKmrcpSRtq2ojtlmAIknxaQzU6-TySYfK6xpX6iz/pub?gid=0&single=true&output=csv';
 
 // Proxy CORS per accedere al foglio (necessario per richieste da browser)
-const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
+// Usiamo corsproxy.io che è più affidabile
+const CORS_PROXY = 'https://corsproxy.io/?';
 
 // Cache per le date disponibili (evita richieste multiple)
 let cacheDateDisponibili = null;
