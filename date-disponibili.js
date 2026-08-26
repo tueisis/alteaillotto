@@ -58,9 +58,12 @@ async function scaricaDateDisponibili() {
                 
                 if (data && disponibile) {
                     dateDisponibili.set(data, true);
+                    console.log('Data disponibile:', data);
                 }
             }
         }
+        
+        console.log('Totale date caricate:', dateDisponibili.size);
         
         // Aggiorna cache
         cacheDateDisponibili = dateDisponibili;
