@@ -5,12 +5,9 @@
  * Le date vengono lette da un foglio Google Sheets privato
  */
 
-// URL del foglio Google Sheets (CSV pubblicato)
-const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT1TUqT_Xr0E7EIaq_Mzq_l90F4-FGt1MGN1HWMYKmrcpSRtq2ojtlmAIknxaQzU6-TySYfK6xpX6iz/pub?gid=0&single=true&output=csv';
-
-// Proxy CORS per accedere al foglio (necessario per richieste da browser)
-// Usiamo corsproxy.io che è più affidabile
-const CORS_PROXY = 'https://corsproxy.io/?';
+// URL del foglio Google Sheets - usiamo l'endpoint JSON che funziona senza proxy
+// Formato: https://docs.google.com/spreadsheets/d/e/{ID}/pub?output=json
+const SHEET_JSON_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT1TUqT_Xr0E7EIaq_Mzq_l90F4-FGt1MGN1HWMYKmrcpSRtq2ojtlmAIknxaQzU6-TySYfK6xpX6iz/pub?gid=0&output=json';
 
 // Cache per le date disponibili (evita richieste multiple)
 let cacheDateDisponibili = null;
@@ -33,33 +30,38 @@ async function scaricaDateDisponibili() {
     }
 
     try {
-        const response = await fetch(CORS_PROXY + encodeURIComponent(SHEET_URL));
-        const csvText = await response.text();
+        const response = await fetch(SHEET_JSON_URL);
+        const jsonText = await response.text();
         
+        // Google Sheets restituisce JSON con struttura speciale
+        const data = JSON.parse(jsonText);
         const dateDisponibili = new Map();
-        const righe = csvText.trim().split('\n');
         
-        // Salta la prima riga (intestazioni)
-        for (let i = 1; i < righe.length; i++) {
-            const colonne = righe[i].split(',');
-            if (colonne.length >= 2) {
-                let dataRaw = colonne[0].trim().replace(/"/g, '');
-                const valore = colonne[1].trim();
-                const disponibile = valore === '1' || valore === 'TRUE' || valore.toUpperCase() === 'TRUE';
-                
-                // Converti data dal formato DD-MM-YYYY a YYYY-MM-DD
-                let data = dataRaw;
-                if (dataRaw.includes('-') && dataRaw.length === 10) {
-                    const parti = dataRaw.split('-');
-                    // Se la prima parte è il giorno (formato DD-MM-YYYY)
-                    if (parti[0].length === 2) {
-                        data = parti[2] + '-' + parti[1] + '-' + parti[0]; // YYYY-MM-DD
+        // I dati sono in data.table.rows
+        if (data && data.table && data.table.rows) {
+            const rows = data.table.rows;
+            
+            // Salta la prima riga (intestazioni)
+            for (let i = 1; i < rows.length; i++) {
+                const row = rows[i];
+                if (row.c && row.c.length >= 2) {
+                    const dataRaw = row.c[0] ? (row.c[0].v || '') : '';
+                    const valore = row.c[1] ? (row.c[1].v || '') : '';
+                    const disponibile = valore === 1 || valore === '1' || valore === true;
+                    
+                    // Converti data dal formato DD-MM-YYYY a YYYY-MM-DD
+                    let dataFormattata = '';
+                    if (dataRaw && typeof dataRaw === 'string' && dataRaw.includes('-')) {
+                        const parti = dataRaw.split('-');
+                        if (parti.length === 3 && parti[0].length === 2) {
+                            dataFormattata = parti[2] + '-' + parti[1] + '-' + parti[0];
+                        }
                     }
-                }
-                
-                if (data && disponibile) {
-                    dateDisponibili.set(data, true);
-                    console.log('Data disponibile:', data);
+                    
+                    if (dataFormattata && disponibile) {
+                        dateDisponibili.set(dataFormattata, true);
+                        console.log('Data disponibile:', dataFormattata);
+                    }
                 }
             }
         }
