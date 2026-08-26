@@ -512,7 +512,10 @@
                 </div>
             </div>
 
-            <form class="cont-form fade-in" action="#" method="post">
+            <form class="cont-form fade-in" action="https://api.web3forms.com/submit" method="POST">
+                <input type="hidden" name="access_key" value="610230e9-10f2-4b8e-a87d-b962b5b2f0e5">
+                <input type="hidden" name="subject" value="Nuova richiesta di prenotazione visita - Altea Illotto">
+                <input type="hidden" name="redirect" value="https://tueisis.github.io/alteaillotto/visitateci.html#prenota">
                 <input type="text" name="nome" placeholder="Nome e Cognome *" required>
                 <input type="tel" name="telefono" placeholder="Telefono *" required>
                 <input type="email" name="email" placeholder="Email">
@@ -779,22 +782,17 @@
         // Inizializza calendario
         renderCalendario();
 
-        // Form
-        document.querySelector('.cont-form')?.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Verifica che sia stata selezionata una data
-            if (!dataSelezionata) {
-                alert('Per favore seleziona una data disponibile dal calendario.');
-                return;
-            }
-            
-            alert('Grazie per la tua richiesta! Ti contatteremo al più presto per confermare la prenotazione.');
-            this.reset();
-            dataSelezionata = null;
-            document.getElementById('dataSelezionataDisplay').classList.remove('visible');
-            renderCalendario();
-        });
+        // Form - Web3Forms gestisce l'invio automaticamente
+        // Verifica che sia stata selezionata una data prima dell'invio
+        const form = document.querySelector('.cont-form');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                if (!dataSelezionata) {
+                    e.preventDefault();
+                    alert('Per favore seleziona una data disponibile dal calendario.');
+                }
+            });
+        }
     </script>
 </body>
 </html>
