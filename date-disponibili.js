@@ -27,8 +27,9 @@ async function scaricaDateDisponibili() {
 
     const dateDisponibili = new Map();
     
-    // Usiamo un proxy gratuito che funziona
-    const url = `https://api.codetabs.com/v1/proxy?quest=https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?gid=0&single=true&output=tsv`;
+    // UsiamoThings.io come proxy (più affidabile)
+    const sheetUrl = `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?gid=0&single=true&output=tsv`;
+    const url = `https://api.allorigins.win/raw?url=${encodeURIComponent(sheetUrl)}`;
     
     try {
         const response = await fetch(url);
@@ -72,7 +73,8 @@ async function scaricaDateDisponibili() {
         
         // Se c'è un errore, prova con un altro proxy
         try {
-            const url2 = `https://corsproxy.io/?https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?gid=0&single=true&output=tsv`;
+            const sheetUrl2 = `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?gid=0&single=true&output=tsv`;
+            const url2 = `https://corsproxy.io/?${encodeURIComponent(sheetUrl2)}`;
             const response2 = await fetch(url2);
             const tsvText2 = await response2.text();
             const righe2 = tsvText2.trim().split('\n');
