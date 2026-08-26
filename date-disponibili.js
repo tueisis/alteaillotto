@@ -42,9 +42,19 @@ async function scaricaDateDisponibili() {
         for (let i = 1; i < righe.length; i++) {
             const colonne = righe[i].split(',');
             if (colonne.length >= 2) {
-                const data = colonne[0].trim().replace(/"/g, '');
+                let dataRaw = colonne[0].trim().replace(/"/g, '');
                 const valore = colonne[1].trim();
                 const disponibile = valore === '1' || valore === 'TRUE' || valore.toUpperCase() === 'TRUE';
+                
+                // Converti data dal formato DD-MM-YYYY a YYYY-MM-DD
+                let data = dataRaw;
+                if (dataRaw.includes('-') && dataRaw.length === 10) {
+                    const parti = dataRaw.split('-');
+                    // Se la prima parte è il giorno (formato DD-MM-YYYY)
+                    if (parti[0].length === 2) {
+                        data = parti[2] + '-' + parti[1] + '-' + parti[0]; // YYYY-MM-DD
+                    }
+                }
                 
                 if (data && disponibile) {
                     dateDisponibili.set(data, true);
