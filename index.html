@@ -880,7 +880,10 @@
                         </a>
                     </div>
                 </div>
-                <form class="cont-form" action="#" method="post">
+                <form class="cont-form" action="https://api.web3forms.com/submit" method="POST">
+                    <input type="hidden" name="access_key" value="610230e9-10f2-4b8e-a87d-b962b5b2f0e5">
+                    <input type="hidden" name="subject" value="Nuovo messaggio dal sito Altea Illotto">
+                    <input type="hidden" name="redirect" value="https://tueisis.github.io/alteaillotto/#contatti">
                     <input type="text" name="nome" placeholder="Nome e Cognome" required>
                     <input type="email" name="email" placeholder="Email" required>
                     <input type="text" name="oggetto" placeholder="Oggetto">
@@ -990,12 +993,7 @@
             });
         });
 
-        // Form
-        document.querySelector('.cont-form')?.addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Grazie per averci scritto! Ti risponderemo al più presto.');
-            this.reset();
-        });
+        // Form - Web3Forms gestisce l'invio automaticamente
     </script>
 </body>
 </html>
