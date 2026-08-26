@@ -40,7 +40,8 @@ async function scaricaDateDisponibili() {
             const colonne = righe[i].split(',');
             if (colonne.length >= 2) {
                 const data = colonne[0].trim().replace(/"/g, '');
-                const disponibile = colonne[1].trim().toUpperCase() === 'TRUE';
+                const valore = colonne[1].trim();
+                const disponibile = valore === '1' || valore === 'TRUE' || valore.toUpperCase() === 'TRUE';
                 
                 if (data && disponibile) {
                     dateDisponibili.set(data, true);
