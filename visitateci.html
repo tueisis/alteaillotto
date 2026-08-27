@@ -466,6 +466,23 @@
                         <li>Approfondimenti sulle tecniche</li>
                     </ul>
                 </div>
+
+                <div class="visita-card fade-in">
+                    <div class="visita-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                        </svg>
+                    </div>
+                    <h3>Visita in Vendemmia</h3>
+                    <div class="durata">Solo settembre</div>
+                    <p>Vivi l'esperienza unica della raccolta delle uve e delle prime fasi di fermentazione nel periodo più vivo dell'anno.</p>
+                    <ul>
+                        <li>Partecipazione alle attività nel vigneto</li>
+                        <li>Visita della cantina in lavorazione</li>
+                        <li>Degustazione dei mosti e dei vini</li>
+                        <li>Spuntino conviviale con i produttori</li>
+                    </ul>
+                </div>
             </div>
 
             <div class="info-box fade-in">
@@ -795,6 +812,34 @@
         }
         
         inizializzaCalendario();
+
+        // Popola automaticamente le opzioni del select 'tipo_visita' in base alle schede della sezione #visite
+        function popolaOpzioniTipoVisita() {
+            const select = document.querySelector('select[name="tipo_visita"]');
+            const carte = document.querySelectorAll('#visite .visita-card');
+            if (!select || carte.length === 0) return;
+
+            const valorePrecedente = select.value;
+            select.innerHTML = '<option value="">Tipo di visita *</option>';
+
+            carte.forEach(card => {
+                const titolo = card.querySelector('h3')?.textContent.trim() || '';
+                const durata = card.querySelector('.durata')?.textContent.replace(/Durata:\s*/i, '').trim() || '';
+                
+                if (titolo) {
+                    const testoOption = durata ? `${titolo} (${durata})` : titolo;
+                    const option = document.createElement('option');
+                    option.value = testoOption;
+                    option.textContent = testoOption;
+                    select.appendChild(option);
+                }
+            });
+
+            if (valorePrecedente) {
+                select.value = valorePrecedente;
+            }
+        }
+        popolaOpzioniTipoVisita();
 
         // Form submission con JavaScript (fetch API) per Web3Forms
         const form = document.querySelector('.cont-form');
