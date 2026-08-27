@@ -277,6 +277,11 @@
             <p class="section-sub">I nostri vini sono presenti in ristoranti, enoteche e wine bar che condividono la nostra visione. Ecco alcuni dei punti vendita.</p>
             <div class="dove-grid fade-in">
                 <div class="dove-card">
+                    <h3>Ristorante</h3>
+                    <h4>Il melograno</h4>
+                    <p>Lavagna (GE), lungo torrente Barassi — Caratterizzato da una cucina dedicata alle specialità di mare.</p>
+                </div>
+                <div class="dove-card">
                     <h3>Bistrò</h3>
                     <h4>Cerchio rosso</h4>
                     <p>Cagliari, via S. Domenico — Vini naurali, cucina e tapas nel cuore di Villanova.</p>
@@ -394,12 +399,6 @@
         }, { threshold: 0.15 });
         document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-        // Form
-        document.querySelector('.cont-form')?.addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Grazie per averci scritto! Ti risponderemo al più presto.');
-            this.reset();
-        });
     </script>
 </body>
 </html>

@@ -516,6 +516,7 @@
                 <input type="hidden" name="access_key" value="610230e9-10f2-4b8e-a87d-b962b5b2f0e5">
                 <input type="hidden" name="subject" value="Nuova richiesta di prenotazione visita - Altea Illotto">
                 <input type="hidden" name="redirect" value="https://tueisis.github.io/alteaillotto/visitateci.html#prenota">
+                <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
                 <input type="text" name="nome" placeholder="Nome e Cognome *" required>
                 <input type="tel" name="telefono" placeholder="Telefono *" required>
                 <input type="email" name="email" placeholder="Email">
@@ -795,15 +796,75 @@
         
         inizializzaCalendario();
 
-        // Form - Web3Forms gestisce l'invio automaticamente
-        // Verifica che sia stata selezionata una data prima dell'invio
+        // Form submission con JavaScript (fetch API) per Web3Forms
         const form = document.querySelector('.cont-form');
         if (form) {
+            const result = document.createElement('div');
+            result.className = 'form-result';
+            result.style.marginTop = '15px';
+            result.style.textAlign = 'center';
+            result.style.fontWeight = '500';
+            form.appendChild(result);
+
             form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
                 if (!dataSelezionata) {
-                    e.preventDefault();
                     alert('Per favore seleziona una data disponibile dal calendario.');
+                    return;
                 }
+
+                const submitBtn = form.querySelector('button[type="submit"]');
+                const originalBtnText = submitBtn ? submitBtn.innerText : '';
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.innerText = 'Invio in corso...';
+                }
+
+                result.style.display = 'block';
+                result.style.color = '#666';
+                result.innerText = 'Invio della richiesta in corso...';
+
+                const formData = new FormData(form);
+                const object = Object.fromEntries(formData);
+                const json = JSON.stringify(object);
+
+                fetch('https://api.web3forms.com/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: json
+                })
+                .then(async (response) => {
+                    const resData = await response.json();
+                    if (response.status === 200 && resData.success) {
+                        result.style.color = '#2e7d32';
+                        result.innerText = 'Grazie! La tua richiesta di prenotazione è stata inviata con successo. Ti risponderemo al più presto per la conferma.';
+                        form.reset();
+                        dataSelezionata = null;
+                        const textEl = document.getElementById('dataSelezionataText');
+                        if (textEl) textEl.innerText = '';
+                        const dispEl = document.getElementById('dataSelezionataDisplay');
+                        if (dispEl) dispEl.style.display = 'none';
+                        if (typeof renderCalendario === 'function') renderCalendario();
+                    } else {
+                        result.style.color = '#c62828';
+                        result.innerText = resData.message || 'Si è verificato un errore durante l\'invio. Riprova più tardi.';
+                    }
+                })
+                .catch(error => {
+                    console.error('Errore invio form:', error);
+                    result.style.color = '#c62828';
+                    result.innerText = 'Si è verificato un errore di connessione. Riprova più tardi.';
+                })
+                .finally(() => {
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerText = originalBtnText;
+                    }
+                });
             });
         }
     </script>

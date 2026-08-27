@@ -439,7 +439,8 @@
             <p class="section-sub">La nostra storia, la nostra terra, la nostra visione del vino.</p>
             <div class="about-grid fade-in">
                 <div class="about-img">
-                    <img src="Maurizio e Adele Altea Illotto.JPG" alt="Monica Altea Illotto - Invaiatura nel vigneto">
+                    <img src="maurizio.jpg" alt="Altea- Invaiatura nel vigneto">
+                    <img src="adele.jpg" alt="Illotto - Invaiatura nel vigneto">
                 </div>
                 <div class="about-text">
                     <h3>Il Vino secondo Natura</h3>
@@ -884,6 +885,7 @@
                     <input type="hidden" name="access_key" value="610230e9-10f2-4b8e-a87d-b962b5b2f0e5">
                     <input type="hidden" name="subject" value="Nuovo messaggio dal sito Altea Illotto">
                     <input type="hidden" name="redirect" value="https://tueisis.github.io/alteaillotto/#contatti">
+                    <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
                     <input type="text" name="nome" placeholder="Nome e Cognome" required>
                     <input type="email" name="email" placeholder="Email" required>
                     <input type="text" name="oggetto" placeholder="Oggetto">
@@ -993,7 +995,66 @@
             });
         });
 
-        // Form - Web3Forms gestisce l'invio automaticamente
+        // Form submission con JavaScript (fetch API) per Web3Forms
+        const form = document.querySelector('.cont-form');
+        if (form) {
+            const result = document.createElement('div');
+            result.className = 'form-result';
+            result.style.marginTop = '15px';
+            result.style.textAlign = 'center';
+            result.style.fontWeight = '500';
+            form.appendChild(result);
+
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const submitBtn = form.querySelector('button[type="submit"]');
+                const originalBtnText = submitBtn ? submitBtn.innerText : '';
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.innerText = 'Invio in corso...';
+                }
+
+                result.style.display = 'block';
+                result.style.color = '#666';
+                result.innerText = 'Invio del messaggio in corso...';
+
+                const formData = new FormData(form);
+                const object = Object.fromEntries(formData);
+                const json = JSON.stringify(object);
+
+                fetch('https://api.web3forms.com/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: json
+                })
+                .then(async (response) => {
+                    const resData = await response.json();
+                    if (response.status === 200 && resData.success) {
+                        result.style.color = '#2e7d32';
+                        result.innerText = 'Grazie! Il tuo messaggio è stato inviato con successo.';
+                        form.reset();
+                    } else {
+                        result.style.color = '#c62828';
+                        result.innerText = resData.message || 'Si è verificato un errore durante l\'invio. Riprova più tardi.';
+                    }
+                })
+                .catch(error => {
+                    console.error('Errore invio form:', error);
+                    result.style.color = '#c62828';
+                    result.innerText = 'Si è verificato un errore di connessione. Riprova più tardi.';
+                })
+                .finally(() => {
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerText = originalBtnText;
+                    }
+                });
+            });
+        }
     </script>
 </body>
 </html>
