@@ -6,14 +6,13 @@
  * oltre al fallback via Google Apps Script e JSON locale.
  */
 
-// 1. Incolla qui il tuo link del foglio Google pubblicato sul Web in formato CSV:
 // File > Condividi > Pubblica sul Web > seleziona il foglio > Valori separati da virgola (.csv) > Pubblica
-const GOOGLE_SHEETS_CSV_URL = '';
+const GOOGLE_SHEETS_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT1TUqT_Xr0E7EIaq_Mzq_l90F4-FGt1MGN1HWMYKmrcpSRtq2ojtlmAIknxaQzU6-TySYfK6xpX6iz/pub?gid=0&single=true&output=csv';
 
-// 2. Endpoint Google Apps Script (Soluzione B alternativa)
+// Endpoint Google Apps Script (Soluzione B alternativa)
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbza_LiiQj6B8aik9KQzqLTCCUfrjDqSqhQcUOEaWb4Rs6cMAMS6hUgfg5s0UdSyW1LN/exec';
 
-// 3. Fallback JSON locale
+// Fallback JSON locale
 const FALLBACK_JSON_URL = 'date-disponibili.json';
 
 // Cache per le date disponibili
