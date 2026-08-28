@@ -2,11 +2,26 @@
  * Configurazione date disponibili per le visite in cantina
  * Altea Illotto - Serdiana
  * 
- * Legge le date dal file JSON locale (date-disponibili.json)
- * Per aggiornare le disponibilità, modifica il file date-disponibili.json
+ * Legge le date dall'API Google Apps Script (deployment web)
+ * con fallback al file JSON locale (date-disponibili.json)
+ * 
+ * ISTRUZIONI:
+ * 1. Apri il foglio Google Sheets
+ * 2. Estensioni > Apps Script
+ * 3. Incolla lo script fornito
+ * 4. Esegui il deployment > Nuova distribuzione > App web
+ *    - Esegui come: Me
+ *    - Chi può accedere: Chiunque
+ * 5. Copia l'URL del deployment qui sotto
  */
 
-// Cache per le date disponibili (in millisecondi)
+// ============================================================
+// INCOLLA QUI L'URL DEL TUO APPS SCRIPT DEPLOYMENT:
+const APPS_SCRIPT_URL = '';
+// Esempio: 'https://script.google.com/macros/s/AKfycbw.../exec'
+// ============================================================
+
+// Cache
 let cacheDateDisponibili = null;
 let cacheTimestamp = null;
 const CACHE_DURATION = 2 * 60 * 1000; // 2 minuti
@@ -20,41 +35,53 @@ function formattaDataYYYYMMDD(data) {
     return `${anno}-${mese}-${giorno}`;
 }
 
-// Scarica le date dal file JSON locale
+// Scarica le date dall'Apps Script o dal JSON locale
 async function scaricaDateDisponibili() {
     if (cacheDateDisponibili && cacheTimestamp && (Date.now() - cacheTimestamp < CACHE_DURATION)) {
         return cacheDateDisponibili;
     }
 
     const dateDisponibili = new Map();
+    let jsonData = null;
 
-    try {
-        // Percorso del file JSON (relativo alla root del sito)
-        const jsonPath = 'date-disponibili.json';
-        
-        const response = await fetch(jsonPath);
-        if (!response.ok) {
-            throw new Error(`HTTP Error: ${response.status}`);
+    // 1. Prova dall'Apps Script
+    if (APPS_SCRIPT_URL && APPS_SCRIPT_URL.trim() !== '') {
+        try {
+            const response = await fetch(APPS_SCRIPT_URL);
+            if (response.ok) {
+                jsonData = await response.json();
+                console.log('Date caricate da Google Apps Script');
+            }
+        } catch (err) {
+            console.warn('Apps Script non raggiungibile, provo fallback JSON locale:', err.message);
         }
-
-        const jsonData = await response.json();
-
-        if (Array.isArray(jsonData)) {
-            jsonData.forEach(item => {
-                if (item && item.data) {
-                    const dataStr = item.data; // formato YYYY-MM-DD
-                    const disponibile = item.disponibile !== false;
-                    if (disponibile) {
-                        dateDisponibili.set(dataStr, true);
-                    }
-                }
-            });
-        }
-
-        console.log('Date caricate dal file JSON. Totale disponibili:', dateDisponibili.size, Array.from(dateDisponibili.keys()));
-    } catch (err) {
-        console.error('Errore nel caricamento del file JSON:', err);
     }
+
+    // 2. Fallback: file JSON locale
+    if (!jsonData) {
+        try {
+            const response = await fetch('date-disponibili.json');
+            if (response.ok) {
+                jsonData = await response.json();
+                console.log('Date caricate dal file JSON locale (fallback)');
+            }
+        } catch (err) {
+            console.error('Errore nel caricamento del JSON locale:', err);
+        }
+    }
+
+    // 3. Popola la mappa
+    if (jsonData && Array.isArray(jsonData)) {
+        jsonData.forEach(item => {
+            if (item && item.data) {
+                if (item.disponibile !== false) {
+                    dateDisponibili.set(item.data, true);
+                }
+            }
+        });
+    }
+
+    console.log('Date disponibili totali:', dateDisponibili.size, Array.from(dateDisponibili.keys()));
 
     cacheDateDisponibili = dateDisponibili;
     cacheTimestamp = Date.now();
@@ -64,13 +91,13 @@ async function scaricaDateDisponibili() {
 // Verifica se una data è disponibile
 function isDataDisponibileSync(data) {
     if (!cacheDateDisponibili) return false;
-    
+
     const dataStr = formattaDataYYYYMMDD(data);
     if (!dataStr) return false;
 
     const oggi = new Date();
     oggi.setHours(0, 0, 0, 0);
-    
+
     // Non permette date nel passato
     if (data < oggi) return false;
 
@@ -81,14 +108,14 @@ function isDataDisponibileSync(data) {
 async function getDateDisponibiliMese(anno, mese) {
     const dateDisponibili = [];
     const ultimoGiorno = new Date(anno, mese + 1, 0).getDate();
-    
+
     for (let giorno = 1; giorno <= ultimoGiorno; giorno++) {
         const data = new Date(anno, mese, giorno);
         if (isDataDisponibileSync(data)) {
             dateDisponibili.push(giorno);
         }
     }
-    
+
     return dateDisponibili;
 }
 
