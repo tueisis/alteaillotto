@@ -8,7 +8,7 @@
  * ISTRUZIONI:
  * 1. Apri il foglio Google Sheets
  * 2. Estensioni > Apps Script
- * 3. Incolla lo script fornito
+ * 3. Incolla il tuo script
  * 4. Esegui il deployment > Nuova distribuzione > App web
  *    - Esegui come: Me
  *    - Chi può accedere: Chiunque
@@ -35,6 +35,72 @@ function formattaDataYYYYMMDD(data) {
     return `${anno}-${mese}-${giorno}`;
 }
 
+// Parsa la data da vari formati restituiti da Google Sheets/Apps Script
+function parseDataDaSheets(val) {
+    if (!val) return null;
+    
+    // Se è già un oggetto Date (da getValues + JSON serialization)
+    if (val instanceof Date) {
+        if (isNaN(val.getTime())) return null;
+        return formattaDataYYYYMMDD(val);
+    }
+    
+    // Se è una stringa ISO da serializzazione JSON di Date
+    if (typeof val === 'string') {
+        const s = val.trim();
+        
+        // Formato ISO: "2026-08-26T00:00:00.000Z" o "2026-08-26"
+        const isoMatch = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+        if (isoMatch) {
+            return `${isoMatch[1]}-${isoMatch[2]}-${isoMatch[3]}`;
+        }
+        
+        // Formato europeo: "26-08-2026" o "26/08/2026"
+        const euMatch = s.match(/^(\d{1,2})[-/.](\d{1,2})[-/.](\d{4})$/);
+        if (euMatch) {
+            const d = String(euMatch[1]).padStart(2, '0');
+            const m = String(euMatch[2]).padStart(2, '0');
+            const y = euMatch[3];
+            return `${y}-${m}-${d}`;
+        }
+        
+        // Formato US: "08-26-2026" o "08/26/2026"
+        const usMatch = s.match(/^(\d{1,2})[-/.](\d{1,2})[-/.](\d{4})$/);
+        if (usMatch && parseInt(usMatch[1]) > 12) {
+            // Se il primo numero > 12, è DD-MM-YYYY
+            const d = String(usMatch[1]).padStart(2, '0');
+            const m = String(usMatch[2]).padStart(2, '0');
+            const y = usMatch[3];
+            return `${y}-${m}-${d}`;
+        }
+    }
+    
+    // Se è un numero (serial date Excel/Sheets)
+    if (typeof val === 'number') {
+        // Google Sheets epoch: 30 Dec 1899
+        const epoch = new Date(1899, 11, 30);
+        const msPerDay = 24 * 60 * 60 * 1000;
+        const date = new Date(epoch.getTime() + val * msPerDay);
+        if (!isNaN(date.getTime())) {
+            return formattaDataYYYYMMDD(date);
+        }
+    }
+    
+    return null;
+}
+
+// Valuta disponibilità dal valore della colonna "disponibilità"
+function valutaDisponibilita(val) {
+    if (val === undefined || val === null) return true;
+    
+    const v = String(val).trim().toLowerCase();
+    if (v === '') return true; // vuoto = disponibile
+    
+    // Valori che significano "NON disponibile"
+    const nonDisponibili = ['0', 'false', 'no', 'occupato', 'non disponibile', 'pieno', 'chiuso', 'full'];
+    return !nonDisponibili.includes(v);
+}
+
 // Scarica le date dall'Apps Script o dal JSON locale
 async function scaricaDateDisponibili() {
     if (cacheDateDisponibili && cacheTimestamp && (Date.now() - cacheTimestamp < CACHE_DURATION)) {
@@ -50,7 +116,7 @@ async function scaricaDateDisponibili() {
             const response = await fetch(APPS_SCRIPT_URL);
             if (response.ok) {
                 jsonData = await response.json();
-                console.log('Date caricate da Google Apps Script');
+                console.log('Date caricate da Google Apps Script:', jsonData);
             }
         } catch (err) {
             console.warn('Apps Script non raggiungibile, provo fallback JSON locale:', err.message);
@@ -70,13 +136,19 @@ async function scaricaDateDisponibili() {
         }
     }
 
-    // 3. Popola la mappa
+    // 3. Popola la mappa gestendo il formato del tuo script
     if (jsonData && Array.isArray(jsonData)) {
         jsonData.forEach(item => {
-            if (item && item.data) {
-                if (item.disponibile !== false) {
-                    dateDisponibili.set(item.data, true);
-                }
+            // Il tuo script restituisce oggetti con chiavi dagli header: data, disponibilità, note
+            const dataRaw = item['data'] ?? item['Data'] ?? item['date'] ?? item['Date'];
+            const dispRaw = item['disponibilità'] ?? item['disponibilita'] ?? item['disponibilità'] ?? item['availability'] ?? item['Disponibilità'];
+            
+            const dataStr = parseDataDaSheets(dataRaw);
+            if (!dataStr) return;
+            
+            const disponibile = valutaDisponibilita(dispRaw);
+            if (disponibile) {
+                dateDisponibili.set(dataStr, true);
             }
         });
     }
