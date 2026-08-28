@@ -1019,9 +1019,21 @@
                 result.style.color = '#666';
                 result.innerText = 'Invio del messaggio in corso...';
 
-                const formData = new FormData(form);
-                const object = Object.fromEntries(formData);
-                const json = JSON.stringify(object);
+                const nomeVal = form.querySelector('[name="nome"]')?.value || '';
+                const emailVal = form.querySelector('[name="email"]')?.value || '';
+                const oggettoVal = form.querySelector('[name="oggetto"]')?.value || '';
+                const messaggioVal = form.querySelector('[name="messaggio"]')?.value || '';
+
+                const payload = {
+                    access_key: '610230e9-10f2-4b8e-a87d-b962b5b2f0e5',
+                    subject: 'Nuovo messaggio dal sito Altea Illotto' + (oggettoVal ? ' - ' + oggettoVal : ''),
+                    from_name: nomeVal,
+                    replyto: emailVal,
+                    'Nome e Cognome': nomeVal,
+                    'Email': emailVal,
+                    'Oggetto': oggettoVal || 'Nessun oggetto',
+                    'Messaggio': messaggioVal
+                };
 
                 fetch('https://api.web3forms.com/submit', {
                     method: 'POST',
@@ -1029,7 +1041,7 @@
                         'Content-Type': 'application/json',
                         'Accept': 'application/json'
                     },
-                    body: json
+                    body: JSON.stringify(payload)
                 })
                 .then(async (response) => {
                     const resData = await response.json();

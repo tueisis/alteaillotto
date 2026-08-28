@@ -467,22 +467,6 @@
                     </ul>
                 </div>
 
-                <div class="visita-card fade-in">
-                    <div class="visita-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-                        </svg>
-                    </div>
-                    <h3>Visita in Vendemmia</h3>
-                    <div class="durata">Solo settembre</div>
-                    <p>Vivi l'esperienza unica della raccolta delle uve e delle prime fasi di fermentazione nel periodo più vivo dell'anno.</p>
-                    <ul>
-                        <li>Partecipazione alle attività nel vigneto</li>
-                        <li>Visita della cantina in lavorazione</li>
-                        <li>Degustazione dei mosti e dei vini</li>
-                        <li>Spuntino conviviale con i produttori</li>
-                    </ul>
-                </div>
             </div>
 
             <div class="info-box fade-in">
@@ -870,9 +854,27 @@
                 result.style.color = '#666';
                 result.innerText = 'Invio della richiesta in corso...';
 
-                const formData = new FormData(form);
-                const object = Object.fromEntries(formData);
-                const json = JSON.stringify(object);
+                const nomeVal = form.querySelector('[name="nome"]')?.value || '';
+                const telefonoVal = form.querySelector('[name="telefono"]')?.value || '';
+                const emailVal = form.querySelector('[name="email"]')?.value || '';
+                const tipoVisitaVal = form.querySelector('[name="tipo_visita"]')?.value || '';
+                const personeVal = form.querySelector('[name="persone"]')?.value || '';
+                const dataVal = form.querySelector('[name="data_preferita"]')?.value || '';
+                const messaggioVal = form.querySelector('[name="messaggio"]')?.value || '';
+
+                const payload = {
+                    access_key: '610230e9-10f2-4b8e-a87d-b962b5b2f0e5',
+                    subject: 'Nuova richiesta di prenotazione visita - Altea Illotto',
+                    from_name: nomeVal,
+                    replyto: emailVal || undefined,
+                    'Nome e Cognome': nomeVal,
+                    'Telefono': telefonoVal,
+                    'Email': emailVal || 'Non specificata',
+                    'Tipo di Visita': tipoVisitaVal,
+                    'Numero di Persone': personeVal,
+                    'Data della Visita': dataVal,
+                    'Note o Richieste': messaggioVal || 'Nessuna nota'
+                };
 
                 fetch('https://api.web3forms.com/submit', {
                     method: 'POST',
@@ -880,7 +882,7 @@
                         'Content-Type': 'application/json',
                         'Accept': 'application/json'
                     },
-                    body: json
+                    body: JSON.stringify(payload)
                 })
                 .then(async (response) => {
                     const resData = await response.json();
