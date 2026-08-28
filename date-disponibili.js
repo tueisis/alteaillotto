@@ -17,8 +17,7 @@
 
 // ============================================================
 // INCOLLA QUI L'URL DEL TUO APPS SCRIPT DEPLOYMENT:
-const APPS_SCRIPT_URL = '';
-// Esempio: 'https://script.google.com/macros/s/AKfycbw.../exec'
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwhfeVnpaoa4dwNqUXazpU0fpnsnkkX6rLG3AgERU_j3uOcHaKy-D5bkonn_6AnXPnd/exec';
 // ============================================================
 
 // Cache
