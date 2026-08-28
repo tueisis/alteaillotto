@@ -347,9 +347,10 @@
         /* HLINE DIVIDER */
         .hline {
             width: 100%; overflow: hidden; line-height: 0; background: var(--gold);
+            padding: 8px 0; box-sizing: border-box;
         }
         .hline img {
-            display: block; width: 100%; height: 80px; object-fit: cover;
+            display: block; width: 100%; height: auto; max-height: 60px; object-fit: contain;
             object-position: center;
         }
 
@@ -385,6 +386,8 @@
             }
             nav.open { transform: translateY(0); opacity: 1; pointer-events: auto; }
             nav a { font-size: 1rem; }
+            .hline { padding: 6px 12px; }
+            .hline img { max-height: 40px; }
             .vino-img { aspect-ratio: 3 / 4; height: auto; }
             .scheda-img { aspect-ratio: 3 / 4; height: auto; max-height: 480px; }
             .scheda-img img { height: 100%; }
@@ -1079,16 +1082,63 @@
                 });
             });
         }
-        // Hero Slideshow Automatico
-        const heroSlides = document.querySelectorAll('.hero-slide');
-        if (heroSlides.length > 1) {
-            let slideIndex = 0;
-            setInterval(() => {
-                heroSlides[slideIndex].classList.remove('active');
-                slideIndex = (slideIndex + 1) % heroSlides.length;
-                heroSlides[slideIndex].classList.add('active');
-            }, 7000); // Cambia immagine ogni 7 secondi
+        // Carica automaticamente TUTTE le foto presenti nella cartella slides/
+        async function caricaSlideAutomaticamente() {
+            const heroBg = document.querySelector('.hero-bg');
+            if (!heroBg) return;
+
+            let immagini = [];
+
+            // 1. Tenta il recupero dinamico dei file tramite API GitHub del repository
+            try {
+                const res = await fetch('https://api.github.com/repos/tueisis/alteaillotto/contents/slides');
+                if (res.ok) {
+                    const files = await res.json();
+                    immagini = files
+                        .filter(f => f.name && f.name.match(/\.(jpe?g|png|webp|gif)$/i))
+                        .map(f => 'slides/' + f.name);
+                }
+            } catch (e) {
+                console.warn('Recupero dinamico immagini da API non disponibile:', e);
+            }
+
+            // 2. Fallback sul file locale slides/slides.json
+            if (immagini.length === 0) {
+                try {
+                    const res = await fetch('slides/slides.json');
+                    if (res.ok) {
+                        const lista = await res.json();
+                        immagini = lista.map(nome => 'slides/' + nome);
+                    }
+                } catch (e) {
+                    console.warn('Fallback slides.json non disponibile:', e);
+                }
+            }
+
+            // 3. Se sono state trovate immagini, costruisci dinamicamente gli elementi nello slider
+            if (immagini.length > 0) {
+                heroBg.innerHTML = '';
+                immagini.forEach((src, idx) => {
+                    const img = document.createElement('img');
+                    img.className = 'hero-slide' + (idx === 0 ? ' active' : '');
+                    img.src = src;
+                    img.alt = 'Altea Illotto';
+                    heroBg.appendChild(img);
+                });
+            }
+
+            // 4. Avvia lo rotazione dello slideshow
+            const heroSlides = heroBg.querySelectorAll('.hero-slide');
+            if (heroSlides.length > 1) {
+                let slideIndex = 0;
+                setInterval(() => {
+                    heroSlides[slideIndex].classList.remove('active');
+                    slideIndex = (slideIndex + 1) % heroSlides.length;
+                    heroSlides[slideIndex].classList.add('active');
+                }, 7000);
+            }
         }
+        caricaSlideAutomaticamente();
     </script>
 </body>
 </html>
