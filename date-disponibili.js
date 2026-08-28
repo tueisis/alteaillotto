@@ -7,7 +7,7 @@
 
 // Incolla qui il tuo link del foglio Google pubblicato sul Web in formato CSV:
 // File > Condividi > Pubblica sul Web > seleziona il foglio > Valori separati da virgola (.csv) > Pubblica
-const GOOGLE_SHEETS_CSV_URL = '';
+const GOOGLE_SHEETS_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT1TUqT_Xr0E7EIaq_Mzq_l90F4-FGt1MGN1HWMYKmrcpSRtq2ojtlmAIknxaQzU6-TySYfK6xpX6iz/pub?gid=0&single=true&output=csv';
 
 // Cache per le date disponibili (in millisecondi)
 let cacheDateDisponibili = null;
