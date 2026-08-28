@@ -369,8 +369,10 @@
             .dove-grid { grid-template-columns: 1fr 1fr; }
         }
         @media (max-width: 768px) {
+            .hero { min-height: 65vh; padding: 110px 0 60px; }
             .hero-content h1 { font-size: 2.6rem; }
-            .hero-content p { font-size: 1rem; }
+            .hero-content p { font-size: 1rem; margin-bottom: 28px; }
+            .hero-scroll { display: none; }
             .section-title { font-size: 2rem; }
             section { padding: 60px 0; }
             .hamburger { display: flex; }
@@ -388,6 +390,9 @@
             .scheda-img img { height: 100%; }
         }
         @media (max-width: 500px) {
+            .hero { min-height: 55vh; padding: 95px 0 50px; }
+            .hero-content h1 { font-size: 2.1rem; }
+            .hero-content p { font-size: 0.95rem; margin-bottom: 22px; }
             .gallery-grid { grid-template-columns: 1fr; }
             .dove-grid { grid-template-columns: 1fr; }
             .footer-grid { grid-template-columns: 1fr; }
