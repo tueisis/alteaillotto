@@ -223,12 +223,10 @@
         }
         .vino-card:hover { transform: translateY(-6px); box-shadow: 0 12px 35px rgba(0,0,0,.08); }
         .vino-img {
-            height: 340px; overflow: hidden; background: #f9f6f0;
-            display: flex; align-items: center; justify-content: center;
-            padding: 16px;
+            width: 100%; aspect-ratio: 3 / 4; overflow: hidden; background: var(--gold);
         }
-        .vino-img img { width: 100%; height: 100%; object-fit: contain; transition: transform .5s; }
-        .vino-card:hover .vino-img img { transform: scale(1.05); }
+        .vino-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s; }
+        .vino-card:hover .vino-img img { transform: scale(1.06); }
         .vino-body { padding: 24px; text-align: center; }
         .vino-body h3 { font-size: 1.25rem; margin-bottom: 4px; }
         .vino-body .vino-denom {
@@ -256,10 +254,9 @@
         }
         .scheda-img {
             border-radius: 8px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,.06);
-            background: #f9f6f0; display: flex; align-items: center; justify-content: center;
-            padding: 20px;
+            width: 100%; aspect-ratio: 3 / 4; max-height: 580px;
         }
-        .scheda-img img { width: 100%; height: 500px; object-fit: contain; }
+        .scheda-img img { width: 100%; height: 100%; object-fit: cover; }
         .scheda-content h3 {
             font-family: var(--font-serif); font-size: 1.6rem; color: var(--accent); margin-bottom: 4px;
         }
@@ -386,9 +383,9 @@
             }
             nav.open { transform: translateY(0); opacity: 1; pointer-events: auto; }
             nav a { font-size: 1rem; }
-            .vino-img { height: 280px; padding: 12px; }
-            .scheda-img { padding: 12px; }
-            .scheda-img img { height: 340px; }
+            .vino-img { aspect-ratio: 3 / 4; height: auto; }
+            .scheda-img { aspect-ratio: 3 / 4; height: auto; max-height: 480px; }
+            .scheda-img img { height: 100%; }
         }
         @media (max-width: 500px) {
             .gallery-grid { grid-template-columns: 1fr; }
