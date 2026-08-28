@@ -658,6 +658,11 @@
         document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
         // CALENDARIO
+        // Configurazione date visite
+        const configurazioneDateVisite = {
+            giorniMassimoFuturo: 365 // 12 mesi in avanti
+        };
+        
         let meseCorrente = new Date().getMonth();
         let annoCorrente = new Date().getFullYear();
         let dataSelezionata = null;
