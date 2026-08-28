@@ -122,10 +122,15 @@
             overflow: hidden; margin-top: 0;
         }
         .hero-bg {
-            position: absolute; inset: 0; z-index: 0;
+            position: absolute; inset: 0; z-index: 0; overflow: hidden;
         }
-        .hero-bg img {
-            width: 100%; height: 100%; object-fit: cover;
+        .hero-slide {
+            position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+            opacity: 0; transition: opacity 1.5s ease-in-out, transform 6s ease-out;
+            transform: scale(1.04);
+        }
+        .hero-slide.active {
+            opacity: 1; transform: scale(1);
         }
         .hero-overlay {
             position: absolute; inset: 0; z-index: 1;
@@ -218,11 +223,12 @@
         }
         .vino-card:hover { transform: translateY(-6px); box-shadow: 0 12px 35px rgba(0,0,0,.08); }
         .vino-img {
-            height: 320px; overflow: hidden; background: var(--gold);
+            height: 340px; overflow: hidden; background: #f9f6f0;
             display: flex; align-items: center; justify-content: center;
+            padding: 16px;
         }
-        .vino-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s; }
-        .vino-card:hover .vino-img img { transform: scale(1.06); }
+        .vino-img img { width: 100%; height: 100%; object-fit: contain; transition: transform .5s; }
+        .vino-card:hover .vino-img img { transform: scale(1.05); }
         .vino-body { padding: 24px; text-align: center; }
         .vino-body h3 { font-size: 1.25rem; margin-bottom: 4px; }
         .vino-body .vino-denom {
@@ -250,8 +256,10 @@
         }
         .scheda-img {
             border-radius: 8px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,.06);
+            background: #f9f6f0; display: flex; align-items: center; justify-content: center;
+            padding: 20px;
         }
-        .scheda-img img { width: 100%; height: 580px; object-fit: cover; }
+        .scheda-img img { width: 100%; height: 500px; object-fit: contain; }
         .scheda-content h3 {
             font-family: var(--font-serif); font-size: 1.6rem; color: var(--accent); margin-bottom: 4px;
         }
@@ -378,8 +386,9 @@
             }
             nav.open { transform: translateY(0); opacity: 1; pointer-events: auto; }
             nav a { font-size: 1rem; }
-            .vino-img { height: 250px; }
-            .scheda-img img { height: 350px; }
+            .vino-img { height: 280px; padding: 12px; }
+            .scheda-img { padding: 12px; }
+            .scheda-img img { height: 340px; }
         }
         @media (max-width: 500px) {
             .gallery-grid { grid-template-columns: 1fr; }
@@ -416,7 +425,9 @@
     <!-- HERO -->
     <section class="hero" id="hero">
         <div class="hero-bg">
-            <img src="PXL_20260619_184831384.jpg" alt="Vigneto Altea Illotto - Serdiana">
+            <img class="hero-slide active" src="PXL_20260619_184831384.jpg" alt="Vigneto Altea Illotto - Serdiana">
+            <img class="hero-slide" src="slides/CantinaAlteaIllotto.jpg" alt="Cantina Altea Illotto">
+            <img class="hero-slide" src="slides/20190602_202850.jpg" alt="Vigneti Altea Illotto">
         </div>
         <div class="hero-overlay"></div>
         <div class="hero-content">
@@ -1066,6 +1077,16 @@
                     }
                 });
             });
+        }
+        // Hero Slideshow Automatico
+        const heroSlides = document.querySelectorAll('.hero-slide');
+        if (heroSlides.length > 1) {
+            let slideIndex = 0;
+            setInterval(() => {
+                heroSlides[slideIndex].classList.remove('active');
+                slideIndex = (slideIndex + 1) % heroSlides.length;
+                heroSlides[slideIndex].classList.add('active');
+            }, 5000);
         }
     </script>
 </body>
