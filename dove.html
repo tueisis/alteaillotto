@@ -140,6 +140,20 @@
         }
         .dove-card .dove-link:hover { text-decoration: underline; }
 
+        /* LISTA RISTORANTI E LOCALI */
+        .lista-locali {
+            list-style: none; margin: 20px auto 0; padding: 0;
+            max-width: 600px;
+        }
+        .lista-locali li {
+            display: flex; align-items: baseline; gap: 12px;
+            padding: 16px 0; border-bottom: 1px solid var(--border);
+        }
+        .lista-locali li:last-child { border-bottom: none; }
+        .lista-locali .nome { font-weight: 600; color: var(--accent); flex-shrink: 0; }
+        .lista-locali .luogo { color: var(--text-light); }
+        .lista-locali .tipo { font-size: .8rem; color: var(--text-light); margin-right: 4px; }
+
         /* CONTATTI (riusato per la sezione contatto diretto) */
         .contatti-info h4 {
             font-family: var(--font-serif); font-size: 1.3rem; margin-bottom: 16px;
@@ -276,29 +290,14 @@
         <div class="container">
             <h2 class="section-title title-accent">Ristoranti e Locali</h2>
             <p class="section-sub">I nostri vini sono presenti in ristoranti, enoteche e wine bar che condividono la nostra visione. Ecco alcuni dei punti vendita.</p>
-            <div class="dove-grid fade-in">
-                <div class="dove-card">
-                    <h3>Ristorante</h3>
-                    <h4>Il melograno</h4>
-                    <p>Lavagna (GE), lungo torrente Barassi — Caratterizzato da una cucina dedicata alle specialità di mare.</p>
-                </div>
-                <div class="dove-card">
-                    <h3>Bistrò</h3>
-                    <h4>Cerchio rosso</h4>
-                    <p>Cagliari, via S. Domenico — Vini naurali, cucina e tapas nel cuore di Villanova.</p>
-                </div>
-                <div class="dove-card">
-                    <h3>Bistrò</h3>
-                    <h4>Babeuf</h4>
-                    <p>Cagliari, via Giardini — Osteria di quartiere e vini naturali.</p>
-                </div>
-                <div class="dove-card">
-                    <h3>Enoteca</h3>
-                    <h4>Sarduzzo</h4>
-                    <p>Cagliari, via Sidney Sonnino — Enoteca, Arrosticini Abruzzesi, Aperitivi.</p>
-                </div>
-            </div>
-            <p class="section-sub" style="margin-top: 40px;">Non trovi il tuo locale? <a href="mailto:info@alteaillotto.com" style="color: var(--accent); font-weight: 600;">Scrivici</a> per proporre una collaborazione o per conoscere il distributore nella tua zona.</p>
+            <ul class="lista-locali fade-in">
+<!-- Le mappe dei locali verranno caricate dinamicamente qui tramite JavaScript -->
+                <li><span class="tipo">· Ristorante</span><span class="nome">Il melograno</span><span class="luogo">Lavagna (GE)</span></li>
+                <li><span class="tipo">· Bistrò</span><span class="nome">Cerchio rosso</span><span class="luogo">Cagliari, via S. Domenico</span></li>
+                <li><span class="tipo">· Bistrò</span><span class="nome">Babeuf</span><span class="luogo">Cagliari, via Giardini</span></li>
+                <li><span class="tipo">· Enoteca</span><span class="nome">Sarduzzo</span><span class="luogo">Cagliari, via Sidney Sonnino</span></li>
+            </ul>
+            <p class="section-sub" style="margin-top: 40px;">Non trovi il tuo locale? <a href="mailto:info@alteaillotto.com" style="color: var(--accent); font-weight: 600;">Scrivici</a> per proporre una collaborazione.</p>
         </div>
     </section>
 

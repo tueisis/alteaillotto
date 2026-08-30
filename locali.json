@@ -1,0 +1,10 @@
+[
+  {
+    "nome": "Il melograno",
+    "iframe": "<iframe src='https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2732.334135807711!2d9.3833!3d44.2666!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1234abcd12345678%3A0x123456789abcdef0!2sIl+melograno!5e0!3m2!1sit!2sit!4v169876543210!5m2!1sit!2sit' width='600' height='450' style='border:0;' allowfullscreen='' loading='lazy' referrerpolicy='strict-origin-when-cross-origin'></iframe>"
+  },
+  {
+    "nome": "Cerchio rosso",
+    "iframe": "<iframe src='https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3083.3336583291317!2d9.121!3d39.223!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12eabcd123456789%3A0x987654321abcd123!2sCerchio+rosso!5e0!3m2!1sit!2sit!4v169876543211!5m2!1sit!2sit' width='600' height='450' style='border:0;' allowfullscreen='' loading='lazy' referrerpolicy='strict-origin-when-cross-origin'></iframe>"
+  }
+]
