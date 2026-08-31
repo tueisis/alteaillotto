@@ -78,9 +78,14 @@
 
         /* HEADER */
         header {
-            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+            position: absolute; top: -100px; left: 0; width: 100%; z-index: 1000;
             background: rgba(252,251,250,.92); backdrop-filter: blur(8px);
-            border-bottom: 1px solid var(--border); transition: .3s;
+            border-bottom: 1px solid var(--border); transition: top .3s;
+        }
+        header.scrolled {
+            position: fixed;
+            top: 0;
+            box-shadow: 0 2px 20px rgba(0,0,0,.06);
         }
         header.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,.06); }
         .nav-wrap {
@@ -403,6 +408,24 @@
 </head>
 <body>
 
+    <!-- HERO -->
+    <section class="hero" id="hero">
+        <div class="hero-bg">
+            <img class="hero-slide active" src="slides/CantinaAlteaIllotto.jpg" alt="Cantina Altea Illotto">
+            <img class="hero-slide" src="slides/20190602_202850.jpg" alt="Vigneti Altea Illotto">
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Altea Illotto</h1>
+            <p>Agricoltura biologica dal 1993, vini naturali e biologici dal 1999, la più lunga produzione di vini biologici in Sardegna.</p>
+            <a href="#vini" class="btn">Scopri le Etichette</a>
+        </div>
+        <div class="hero-scroll">
+            <span>Scopri di più</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
+        </div>
+    </section>
+
     <!-- HEADER -->
     <header id="header">
         <div class="container nav-wrap">
@@ -425,23 +448,6 @@
             </nav>
         </div>
     </header>
-
-    <!-- HERO -->
-    <section class="hero" id="hero">
-        <div class="hero-bg">
-            <img class="hero-slide active" src="slides/CantinaAlteaIllotto.jpg" alt="Cantina Altea Illotto">
-            <img class="hero-slide" src="slides/20190602_202850.jpg" alt="Vigneti Altea Illotto">
-        </div>
-        <div class="hero-overlay"></div>
-        <div class="hero-content">
-            <h2>Agricoltura biologica dal 1993, vini naturali e biologici dal 1999, la più lunga produzione di vini biologici in Sardegna.</h2>
-            <a href="#vini" class="btn">Scopri le Etichette</a>
-        </div>
-        <div class="hero-scroll">
-            <span>Scopri di più</span>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
-        </div>
-    </section>
 
     <div class="hline"><img src="alteaillotto_hline.png" alt="" aria-hidden="true" loading="lazy"></div>
 
@@ -1136,6 +1142,21 @@
             }
         }
         caricaSlideAutomaticamente();
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const header = document.getElementById('header');
+            const hero = document.getElementById('hero');
+
+            window.addEventListener('scroll', () => {
+                const heroHeight = hero.offsetHeight;
+                if (window.scrollY > heroHeight) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+        });
     </script>
 </body>
 </html>
