@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galleria — Altea Illotto</title>
+    <meta name="description" content="Scorci di vita in vigna e in cantina, tra Serdiana e Sibiola. Immagini dei nostri vigneti, della vendemmia e del territorio.">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+        font-family: 'Altea Illotto';
+        src: url('Alteaillottofont-Regular.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;}
+        :root {
+            --bg: #fcf9f2;
+            --text: #2c2c2c;
+            --text-light: #6b6b6b;
+            --accent: #8C2D32;
+            --accent-hover: #6B1F25;
+            --gold: #EAD3A2;
+            --border: #e0d6c8;
+            --max-w: 1120px;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --font-serif: 'Altea Illotto', 'Playfair Display', Georgia, serif;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+        }
+        img { max-width: 100%; height: auto; display: block; }
+        a { color: inherit; text-decoration: none; }
+        ul { list-style: none; }
+        .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+        /* BTN */
+        .btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--accent); color: #fff; padding: 14px 28px;
+            font-weight: 600; border-radius: 6px; border: none; cursor: pointer;
+            font-size: 0.95rem; transition: .25s ease;
+        }
+        .btn:hover { background: var(--accent-hover); transform: translateY(-1px); }
+        .btn:active { transform: translateY(0); }
+
+        .section { padding: 90px 0; }
+        .section-dark { background: var(--gold); }
+        .section-title {
+            font-family: var(--font-serif); font-size: 2.4rem; font-weight: 500;
+            margin-bottom: 16px; text-align: center;
+        }
+        .section-sub {
+            text-align: center; color: var(--text-light); font-size: 1.05rem;
+            max-width: 620px; margin: 0 auto 50px;
+        }
+        .title-accent {
+            display: inline-block; position: relative;
+        }
+        .title-accent::after {
+            content: ''; display: block; width: 60px; height: 2px;
+            background: var(--accent); margin: 14px auto 0;
+        }
+
+        /* HEADER */
+        header {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+            background: rgba(252,251,250,.92); backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 2px 20px rgba(0,0,0,.06);
+        }
+        .nav-wrap {
+            display: flex; justify-content: space-between; align-items: center;
+            height: 80px;
+        }
+        .logo-link {
+            display: flex; align-items: center; gap: 14px;
+            font-family: var(--font-serif); font-size: 1.5rem;
+            color: var(--accent); font-weight: 600;
+        }
+        .logo-link img { height: 80px; width: auto; }
+        nav { display: flex; align-items: center; gap: 32px; }
+        nav a {
+            font-size: .92rem; font-weight: 500; position: relative;
+            transition: color .2s;
+        }
+        nav a::after {
+            content: ''; position: absolute; bottom: -4px; left: 0; width: 0;
+            height: 2px; background: var(--accent); transition: width .3s;
+        }
+        nav a:hover { color: var(--accent); }
+        nav a:hover::after { width: 100%; }
+        .hamburger {
+            display: none; flex-direction: column; gap: 5px; cursor: pointer;
+            background: none; border: none; padding: 5px;
+        }
+        .hamburger span {
+            display: block; width: 26px; height: 2px; background: var(--text);
+            border-radius: 2px; transition: .3s;
+        }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+
+        /* PAGE HERO */
+        .page-hero {
+            padding: 160px 0 80px;
+            background: var(--bg);
+            text-align: center;
+        }
+        .page-hero h1 {
+            font-family: var(--font-serif); font-size: 3.5rem; font-weight: 500;
+            color: var(--accent); margin-bottom: 16px;
+        }
+        .page-hero p {
+            font-size: 1.1rem; color: var(--text-light); max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* GALLERIA SEZIONI */
+        .gallery-section h3 {
+            font-family: var(--font-serif); font-size: 2rem; font-weight: 500;
+            color: var(--accent); margin-bottom: 12px; text-align: center;
+        }
+        .gallery-section .gallery-intro {
+            text-align: center; color: var(--text-light); font-size: 1rem;
+            max-width: 700px; margin: 0 auto 40px;
+        }
+        .gallery-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+        }
+        .gallery-item {
+            position: relative; border-radius: 8px; overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,.08);
+            transition: transform .35s ease, box-shadow .35s;
+            cursor: pointer;
+        }
+        .gallery-item:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 30px rgba(0,0,0,.15);
+        }
+        .gallery-item img {
+            width: 100%; height: 320px; object-fit: cover;
+            transition: transform .5s;
+        }
+        .gallery-item:hover img {
+            transform: scale(1.08);
+        }
+        .gallery-caption {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,.8) 0%, rgba(0,0,0,.5) 70%, transparent 100%);
+            color: #fff; padding: 50px 20px 20px;
+            opacity: 0; transition: opacity .35s;
+        }
+        .gallery-item:hover .gallery-caption {
+            opacity: 1;
+        }
+        .gallery-caption p {
+            font-size: .9rem; line-height: 1.5; font-weight: 400;
+        }
+
+        /* LIGHTBOX */
+        .lightbox {
+            display: none; position: fixed; z-index: 9999; inset: 0;
+            background: rgba(0,0,0,.92); align-items: center; justify-content: center;
+            padding: 40px 20px;
+        }
+        .lightbox.active { display: flex; }
+        .lightbox-content {
+            max-width: 90vw; max-height: 90vh; position: relative;
+        }
+        .lightbox-content img {
+            max-width: 100%; max-height: 90vh; object-fit: contain;
+            border-radius: 4px;
+        }
+        .lightbox-caption {
+            color: #fff; text-align: center; margin-top: 16px;
+            font-size: .95rem; line-height: 1.6;
+        }
+        .lightbox-close {
+            position: absolute; top: 20px; right: 20px;
+            width: 40px; height: 40px; border-radius: 50%;
+            background: rgba(255,255,255,.15); backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,.3);
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: .25s;
+        }
+        .lightbox-close:hover {
+            background: rgba(255,255,255,.25);
+        }
+        .lightbox-close::before, .lightbox-close::after {
+            content: ''; position: absolute; width: 18px; height: 2px;
+            background: #fff; border-radius: 1px;
+        }
+        .lightbox-close::before { transform: rotate(45deg); }
+        .lightbox-close::after { transform: rotate(-45deg); }
+
+        /* HLINE DIVIDER */
+        .hline {
+            width: 100%; overflow: hidden; line-height: 0; background: var(--gold);
+        }
+        .hline img {
+            display: block; width: 100%; height: 80px; object-fit: cover;
+            object-position: center;
+        }
+
+        /* FADE IN */
+        .fade-in { opacity: 0; transform: translateY(30px); transition: opacity .7s ease, transform .7s ease; }
+        .fade-in.show { opacity: 1; transform: translateY(0); }
+
+        /* FOOTER */
+        footer {
+            background: #1e1e1e; color: #b3b3b3; padding: 60px 0 30px;
+        }
+        .footer-grid {
+            display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px;
+        }
+        footer h4 {
+            color: #fff; font-size: .95rem; text-transform: uppercase;
+            letter-spacing: 1px; margin-bottom: 16px;
+        }
+        footer p, footer a { font-size: .88rem; line-height: 1.8; }
+        footer a:hover { color: #fff; }
+        footer .footer-logo {
+            font-family: var(--font-serif); font-size: 1.2rem; color: #fff; margin-bottom: 10px;
+        }
+        footer .footer-logo span { color: var(--accent); }
+        .footer-bottom {
+            margin-top: 40px; padding-top: 20px; border-top: 1px solid #333;
+            text-align: center; font-size: .82rem; color: #666;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
+            .gallery-item img { height: 280px; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 768px) {
+            .page-hero { padding: 130px 0 60px; }
+            .page-hero h1 { font-size: 2.6rem; }
+            .page-hero p { font-size: 1rem; }
+            .section { padding: 60px 0; }
+            .section-title { font-size: 2rem; }
+            .hamburger { display: flex; }
+            nav { position: fixed; top: 80px; left: 0; width: 100%;
+                background: rgba(252,251,250,.97); backdrop-filter: blur(8px);
+                flex-direction: column; padding: 20px 24px; gap: 18px;
+                border-bottom: 1px solid var(--border);
+                transform: translateY(-120%); opacity: 0; transition: .35s ease;
+                pointer-events: none; align-items: flex-start;
+            }
+            nav.open { transform: translateY(0); opacity: 1; pointer-events: auto; }
+            nav a { font-size: 1rem; }
+            .hline img { height: 45px; }
+            .gallery-section h3 { font-size: 1.7rem; }
+        }
+        @media (max-width: 500px) {
+            .page-hero { padding: 110px 0 50px; }
+            .page-hero h1 { font-size: 2rem; }
+            .gallery-grid { grid-template-columns: 1fr; }
+            .gallery-item img { height: 320px; }
+            .footer-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header id="header">
+        <div class="container nav-wrap">
+            <a href="index.html" class="logo-link">
+                <img src="logo.png" alt="Altea Illotto" loading="lazy">
+                Altea Illotto
+            </a>
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+            <nav id="nav">
+                <a href="index.html#chi-siamo">Chi Siamo</a>
+                <a href="index.html#vigneto">Vigneto</a>
+                <a href="index.html#vini">I Vini</a>
+                <a href="index.html#scheda">Schede</a>
+                <a href="index.html#dove">Dove Trovarci</a>
+                <a href="galleria.html">Galleria</a>
+                <a href="index.html#contatti">Contatti</a>
+                <a href="https://archivio.alteaillotto.com" target="_blank" rel="noopener noreferrer">Archivio</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- PAGE HERO -->
+    <section class="page-hero">
+        <div class="container">
+            <h1>Galleria</h1>
+            <p>Scorci di vita in vigna e in cantina. Il nostro lavoro raccontato per immagini.</p>
+        </div>
+    </section>
+
+    <div class="hline"><img src="alteaillotto_hline.png" alt="" aria-hidden="true" loading="lazy"></div>
+
+    <!-- I VIGNETI -->
+    <section class="section section-dark">
+        <div class="container">
+            <div class="gallery-section fade-in">
+                <h3>I Vigneti</h3>
+                <p class="gallery-intro">I nostri cinque ettari a Serdiana, coltivati con i metodi dell'agricoltura biologica dal 1993. Vitigni autoctoni allevati ad alberello e Guyot Poussard.</p>
+                <div class="gallery-grid">
+                    <div class="gallery-item" data-img="PXL_20260619_184818389.jpg" data-caption="Vigneto in località Sibiola, allevato ad alberello su terreni argilloso marnosi">
+                        <img src="PXL_20260619_184818389.jpg" alt="Vigneto Altea Illotto" loading="lazy">
+                        <div class="gallery-caption">
+                            <p>Vigneto in località Sibiola, allevato ad alberello su terreni argilloso marnosi</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-img="vigna/PXL_20260504_082211268_1.jpg" data-caption="Nasco">
+                        <img src="vigna/PXL_20260504_082211268_1.jpg" alt="Nasco" loading="lazy">
+                        <div class="gallery-caption">
+                            <p>Nasco</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-img="vigna/PXL_20260507_090432959_1.jpg" data-caption="Nuragus">
+                        <img src="vigna/PXL_20260507_090432959_1.jpg" alt="Nuragus" loading="lazy">
+                        <div class="gallery-caption">
+                            <p>Nuragus</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-img="vigna/PXL_20260617_174553289~2.jpg" data-caption="Malvasia">
+                        <img src="vigna/PXL_20260617_174553289~2.jpg" alt="Malvasia" loading="lazy">
+                        <div class="gallery-caption">
+                            <p>Malvasia</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-img="vigna/PXL_20260821_180450172~2.jpg" data-caption="Moscato">
+                        <img src="vigna/PXL_20260821_180450172~2.jpg" alt="Moscato" loading="lazy">
+                        <div class="gallery-caption">
+                            <p>Moscato</p>
+                        </div>
+                    </div>
+                    <!-- Aggiungi qui altre foto dei vigneti -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="hline"><img src="alteaillotto_hline.png" alt="" aria-hidden="true" loading="lazy"></div>
+
+    <!-- LA VENDEMMIA -->
+    <section class="section">
+        <div class="container">
+            <div class="gallery-section fade-in">
+                <h3>Uve</h3>
+                <p class="gallery-intro">Raccolta rigorosamente manuale in piccole cassette forate, con selezione dei grappoli. L'uva arriva in cantina sana e integra.</p>
+                <div class="gallery-grid">
+                    <div class="gallery-item" data-img="monica%20invaiatura.jpg" data-caption="Monica in fase di invaiatura, quando l'uva inizia a cambiare colore e maturare">
+                        <img src="monica%20invaiatura.jpg" alt="Monica invaiatura" loading="lazy">
+                        <div class="gallery-caption">
+                            <p>Monica in fase di invaiatura, quando l'uva inizia a cambiare colore e maturare</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-img="frutta/cannonau_.jpg" data-caption="Cannonau">
+                        <img src="frutta/cannonau_.jpg" alt="Cannonau" loading="lazy">
+                        <div class="gallery-caption">
+                            <p>Cannonau</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-img="frutta/Nuragus_.jpg" data-caption="Nuragus">
+                        <img src="frutta/Nuragus_.jpg" alt="Nuragus_" loading="lazy">
+                        <div class="gallery-caption">
+                            <p>Nuragus</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-img="frutta/PXL_20260821_074351875.jpg" data-caption="Monica">
+                        <img src="frutta/PXL_20260821_074351875.jpg" alt="Monica" loading="lazy">
+                        <div class="gallery-caption">
+                            <p>Monica</p>
+                        </div>
+                    </div>
+                    <!-- Aggiungi qui altre foto della vendemmia -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="hline"><img src="alteaillotto_hline.png" alt="" aria-hidden="true" loading="lazy"></div>
+
+    <!-- LA CANTINA -->
+    <section class="section section-dark">
+        <div class="container">
+            <div class="gallery-section fade-in">
+                <h3>La Cantina</h3>
+                <p class="gallery-intro">Fermentazioni spontanee, solforosa a bassissime dosi. Dalla vigna alla bottiglia, tutto gestito personalmente.</p>
+                <div class="gallery-grid">
+                    <div class="gallery-item" data-img="slides/CantinaAlteaIllotto.jpg" data-caption="La nostra cantina a Serdiana, dove nascono i nostri vini naturali">
+                        <img src="slides/CantinaAlteaIllotto.jpg" alt="Cantina Altea Illotto" loading="lazy">
+                        <div class="gallery-caption">
+                            <p>La nostra cantina a Serdiana, dove nascono i nostri vini naturali</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-img="cantina/CantinaAlteaIllotto3.jpg" data-caption="Serbatoi di ceramica">
+                        <img src="cantina/CantinaAlteaIllotto3.jpg" alt="Serbatoi di ceramica" loading="lazy">
+                        <div class="gallery-caption">
+                            <p>Serbatoi di ceramica</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-img="cantina/PXL_20260901_093010367~2.jpg" data-caption="Scarico delle uve">
+                        <img src="cantina/PXL_20260901_093010367~2.jpg" alt="Scarico delle uve" loading="lazy">
+                        <div class="gallery-caption">
+                            <p>Scarico delle uve</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-img="cantina/vendemmia06 042.jpg" data-caption="Fermentazione in vasche d'acciaio">
+                        <img src="cantina/vendemmia06 042.jpg" alt="Fermentazione in vasche d'acciaio" loading="lazy">
+                        <div class="gallery-caption">
+                            <p>Fermentazione in vasche d'acciaio</p>
+                        </div>
+                    </div>
+                    <!-- Aggiungi qui altre foto della cantina -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="hline"><img src="alteaillotto_hline.png" alt="" aria-hidden="true" loading="lazy"></div>
+
+    <!-- LE BOTTIGLIE -->
+    <section class="section">
+        <div class="container">
+            <div class="gallery-section fade-in">
+                <h3>Le Etichette</h3>
+                <p class="gallery-intro">Le nostre bottiglie, espressioni autentiche del territorio sardo con vitigni autoctoni e tradizionali.</p>
+                <div class="gallery-grid">
+                    <div class="gallery-item" data-img="bottiglie/PXL_20260612_055840651.jpg" data-caption="Le nostre bottiglie raccontano il territorio di Sibiola">
+                        <img src="bottiglie/PXL_20260612_055840651.jpg" alt="Bottiglie Altea Illotto" loading="lazy">
+                        <div class="gallery-caption">
+                            <p>Le nostre bottiglie raccontano il territorio di Sibiola</p>
+                        </div>
+                    </div>
+                    <!-- Aggiungi qui altre foto delle bottiglie -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="hline"><img src="alteaillotto_hline.png" alt="" aria-hidden="true" loading="lazy"></div>
+
+    <!-- IL TERRITORIO -->
+    <section class="section section-dark">
+        <div class="container">
+            <div class="gallery-section fade-in">
+                <h3>Persone</h3>
+                <p class="gallery-intro">Altea Illotto e i suoi amici.</p>
+                <div class="gallery-grid">
+                    <div class="gallery-item" data-img="noi.jpg" data-caption="Maurizio Altea e Adele Illotto">
+                        <img src="noi.jpg" alt="Maurizio Altea e Adele Illotto" loading="lazy">
+                        <div class="gallery-caption">
+                            <p>Maurizio Altea e Adele Illotto</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-img="ritratti/Altea_Illotto.JPG" data-caption="Maurizio Altea e Adele Illotto">
+                        <img src="ritratti/Altea_Illotto.JPG" alt="Maurizio Altea e Adele Illotto" loading="lazy">
+                        <div class="gallery-caption">
+                            <p>Maurizio Altea e Adele Illotto</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-img="ritratti/maurizio.jpg" data-caption="Maurizio">
+                        <img src="ritratti/maurizio.jpg" alt="Maurizio" loading="lazy">
+                        <div class="gallery-caption">
+                            <p>Maurizio</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-img="ritratti/io.jpg" data-caption="Adriano">
+                        <img src="ritratti/io.jpg" alt="Adriano" loading="lazy">
+                        <div class="gallery-caption">
+                            <p>Adriano</p>
+                        </div>
+                    </div>
+                    <!-- Aggiungi qui altre foto del territorio -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="hline"><img src="alteaillotto_hline.png" alt="" aria-hidden="true" loading="lazy"></div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <div class="footer-logo"><span>Altea</span> Illotto</div>
+                    <p>Vitigni di territorio, fermentazioni spontanee.<br>Vini artigianali non filtrati, nati a Serdiana, località Sibiola.</p>
+                </div>
+                <div>
+                    <h4>Link</h4>
+                    <p><a href="index.html#chi-siamo">Chi Siamo</a></p>
+                    <p><a href="index.html#vigneto">Vigneto</a></p>
+                    <p><a href="index.html#vini">I Vini</a></p>
+                    <p><a href="index.html#scheda">Schede</a></p>
+                    <p><a href="index.html#dove">Dove Trovarci</a></p>
+                    <p><a href="galleria.html">Galleria</a></p>
+                    <p><a href="index.html#contatti">Contatti</a></p>
+                </div>
+                <div>
+                    <h4>Contatti</h4>
+                    <p><strong>Via Don Minzoni, 12</strong><br>Serdiana (CA)</p>
+                    <p><a href="mailto:info@alteaillotto.com">info@alteaillotto.com</a></p>
+                    <p><a href="tel:+393396773628">+39 339 6773 628</a></p>
+                </div>
+                <div>
+                    <h4>Orari Visite</h4>
+                    <p>Su appuntamento</p>
+                    <p>Scrivici per organizzare<br>una degustazione</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2026 Altea Illotto — Azienda Agricola Artigianale. Tutti i diritti riservati.
+            </div>
+        </div>
+    </footer>
+
+    <!-- LIGHTBOX -->
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-close" id="lightboxClose"></div>
+        <div class="lightbox-content">
+            <img id="lightboxImg" src="" alt="">
+            <div class="lightbox-caption" id="lightboxCaption"></div>
+        </div>
+    </div>
+
+    <script>
+        // Hamburger menu
+        const hamburger = document.getElementById('hamburger');
+        const nav = document.getElementById('nav');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            nav.classList.toggle('open');
+        });
+        document.querySelectorAll('nav a').forEach(a => {
+            a.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                nav.classList.remove('open');
+            });
+        });
+
+        // Fade-in on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show');
+                }
+            });
+        }, { threshold: 0.15 });
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // Lightbox functionality
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+        const lightboxCaption = document.getElementById('lightboxCaption');
+        const lightboxClose = document.getElementById('lightboxClose');
+
+        document.querySelectorAll('.gallery-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const imgSrc = item.dataset.img;
+                const caption = item.dataset.caption;
+                lightboxImg.src = imgSrc;
+                lightboxCaption.textContent = caption;
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        lightboxClose.addEventListener('click', closeLightbox);
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                closeLightbox();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+                closeLightbox();
+            }
+        });
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    </script>
+</body>
+</html>
