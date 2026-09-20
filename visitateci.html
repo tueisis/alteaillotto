@@ -122,10 +122,15 @@
             overflow: hidden; margin-top: 80px;
         }
         .hero-visite .hero-bg {
-            position: absolute; inset: 0; z-index: 0;
+            position: absolute; inset: 0; z-index: 0; overflow: hidden;
         }
-        .hero-visite .hero-bg img {
-            width: 100%; height: 100%; object-fit: cover;
+        .hero-visite .hero-slide {
+            position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+            opacity: 0; transition: opacity 1.5s ease-in-out, transform 6s ease-out;
+            transform: scale(1.04);
+        }
+        .hero-visite .hero-slide.active {
+            opacity: 1; transform: scale(1);
         }
         .hero-visite .hero-overlay {
             position: absolute; inset: 0; z-index: 1;
@@ -414,8 +419,8 @@
 
     <!-- HERO -->
     <section class="hero-visite">
-        <div class="hero-bg">
-            <img src="serdiana/PXL_20260909_160043451.MP~3.jpg" alt="Vigneto Altea Illotto - Serdiana">
+        <div class="hero-bg" id="hero-visite-bg">
+            <!-- Slide verranno inserite via JS -->
         </div>
         <div class="hero-overlay"></div>
         <div class="hero-content">
@@ -887,6 +892,36 @@
                     }
                 });
             });
+        }
+    </script>
+    <script>
+        // Slideshow per visitateci.html - stesse slide di index
+        const heroBg = document.getElementById('hero-visite-bg');
+        const slideImages = [
+            'serdiana/PXL_20260909_160043451.MP~3.jpg',
+            'sarchittu/PXL_20260918_162758035~3.jpg'
+        ];
+
+        if (heroBg && slideImages.length > 0) {
+            // Crea gli elementi slide
+            slideImages.forEach((src, idx) => {
+                const img = document.createElement('img');
+                img.className = 'hero-slide' + (idx === 0 ? ' active' : '');
+                img.src = src;
+                img.alt = 'Altea Illotto';
+                heroBg.appendChild(img);
+            });
+
+            // Avvia rotazione
+            const heroSlides = heroBg.querySelectorAll('.hero-slide');
+            if (heroSlides.length > 1) {
+                let slideIndex = 0;
+                setInterval(() => {
+                    heroSlides[slideIndex].classList.remove('active');
+                    slideIndex = (slideIndex + 1) % heroSlides.length;
+                    heroSlides[slideIndex].classList.add('active');
+                }, 7000);
+            }
         }
     </script>
 </body>
