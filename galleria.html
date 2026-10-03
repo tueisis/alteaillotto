@@ -840,14 +840,26 @@
         });
 
         // Fade-in on scroll
+        const observerOptions = {
+            threshold: 0.05,
+            rootMargin: '0px 0px 100px 0px'
+        };
+
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('show');
+                    observer.unobserve(entry.target);
                 }
             });
-        }, { threshold: 0.15 });
+        }, observerOptions);
 
+        // Aggiungiamo la classe fade-in a ogni elemento della galleria per un effetto progressivo
+        document.querySelectorAll('.gallery-item').forEach(item => {
+            item.classList.add('fade-in');
+        });
+
+        // Osserviamo sia le sezioni che gli elementi della galleria
         document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
         // Lightbox functionality
