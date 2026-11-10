@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Altea Illotto — Eventi</title>
+    <meta name="description" content="Eventi, fiere del vino artigianale, degustazioni in vigna e incontri con la cantina Altea Illotto a Serdiana.">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'Altea Illotto';
+            src: url('Alteaillottofont-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+        :root {
+            --bg: #fcf9f2;
+            --text: #2c2c2c;
+            --text-light: #6b6b6b;
+            --accent: #8C2D32;
+            --accent-hover: #6B1F25;
+            --gold: #EAD3A2;
+            --border: #e0d6c8;
+            --max-w: 1120px;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --font-serif: 'Altea Illotto', 'Playfair Display', Georgia, serif;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+        }
+        img { max-width: 100%; height: auto; display: block; }
+        a { color: inherit; text-decoration: none; }
+        ul { list-style: none; }
+        .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+        /* BUTTONS */
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            background: var(--accent); color: #fff; padding: 12px 24px;
+            font-weight: 600; border-radius: 6px; border: none; cursor: pointer;
+            font-size: 0.92rem; transition: .25s ease; text-decoration: none;
+        }
+        .btn:hover { background: var(--accent-hover); color: #fff; transform: translateY(-1px); }
+        .btn:active { transform: translateY(0); }
+        .btn-outline {
+            background: transparent; color: var(--accent);
+            border: 1px solid var(--accent); padding: 11px 22px;
+        }
+        .btn-outline:hover { background: var(--accent); color: #fff; }
+
+        /* SECTIONS */
+        .section { padding: 80px 0; }
+        .section-dark { background: var(--gold); }
+        .section-title {
+            font-family: var(--font-serif); font-size: 2.3rem; font-weight: 500;
+            margin-bottom: 16px; text-align: center;
+        }
+        .section-sub {
+            text-align: center; color: var(--text-light); font-size: 1.05rem;
+            max-width: 660px; margin: 0 auto 50px;
+        }
+        .title-accent {
+            display: inline-block; position: relative;
+        }
+        .title-accent::after {
+            content: ''; display: block; width: 60px; height: 2px;
+            background: var(--accent); margin: 14px auto 0;
+        }
+
+        /* HEADER */
+        header {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+            background: rgba(252,251,250,.92); backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--border); transition: .3s;
+        }
+        header.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,.06); }
+        .nav-wrap {
+            display: flex; justify-content: space-between; align-items: center;
+            height: 80px;
+        }
+        .logo-link {
+            display: flex; align-items: center; gap: 14px;
+            font-family: var(--font-serif); font-size: 1.5rem;
+            color: var(--accent); font-weight: 600;
+        }
+        .logo-link img { height: 80px; width: auto; }
+        nav { display: flex; align-items: center; gap: 32px; }
+        nav a {
+            font-size: .92rem; font-weight: 500; position: relative;
+            transition: color .2s;
+        }
+        nav a::after {
+            content: ''; position: absolute; bottom: -4px; left: 0; width: 0;
+            height: 2px; background: var(--accent); transition: width .3s;
+        }
+        nav a:hover, nav a.active { color: var(--accent); }
+        nav a:hover::after, nav a.active::after { width: 100%; }
+        .hamburger {
+            display: none; flex-direction: column; gap: 5px; cursor: pointer;
+            background: none; border: none; padding: 5px;
+        }
+        .hamburger span {
+            display: block; width: 26px; height: 2px; background: var(--text);
+            border-radius: 2px; transition: .3s;
+        }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+
+        /* PAGE HERO */
+        .page-hero {
+            padding: 150px 0 70px;
+            background: var(--bg);
+            text-align: center;
+        }
+        .page-hero h1 {
+            font-family: var(--font-serif); font-size: 3.2rem; font-weight: 500;
+            color: var(--accent); margin-bottom: 14px;
+        }
+        .page-hero p {
+            font-size: 1.1rem; color: var(--text-light); max-width: 680px;
+            margin: 0 auto; line-height: 1.7;
+        }
+
+        /* EVENT CARD LAYOUT */
+        .events-container {
+            max-width: 960px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 36px;
+        }
+        .event-card {
+            background: #fffcf7;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            display: flex;
+            overflow: hidden;
+            transition: transform .35s ease, box-shadow .35s ease;
+        }
+        .event-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0,0,0,.07);
+        }
+
+        /* DATE COLUMN */
+        .event-date-col {
+            background: #f7efe1;
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px 18px;
+            min-width: 125px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        .date-day {
+            font-family: var(--font-serif);
+            font-size: 2.8rem;
+            font-weight: 600;
+            line-height: 1;
+            color: var(--accent);
+        }
+        .date-month {
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text);
+            margin-top: 6px;
+        }
+        .date-year {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-top: 2px;
+        }
+
+        /* EVENT CONTENT */
+        .event-content {
+            padding: 28px 32px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .event-meta-top {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+        .event-tag {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            padding: 4px 10px;
+            border-radius: 4px;
+            background: var(--gold);
+            color: var(--accent);
+        }
+        .event-tag.tag-fiera {
+            background: #eadbc5;
+            color: #5c301a;
+        }
+        .event-tag.tag-degustazione {
+            background: #f5e4e4;
+            color: var(--accent);
+        }
+        .event-status {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 4px;
+        }
+        .event-status.in-programma {
+            background: #e6f4ea;
+            color: #137333;
+        }
+        .event-status.concluso {
+            background: #f1f3f4;
+            color: #5f6368;
+        }
+        .event-title {
+            font-family: var(--font-serif);
+            font-size: 1.65rem;
+            font-weight: 600;
+            color: var(--text);
+            line-height: 1.3;
+            margin-bottom: 14px;
+        }
+        .event-details-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+        .event-detail-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-light);
+            font-size: 0.93rem;
+        }
+        .event-detail-item svg {
+            width: 17px;
+            height: 17px;
+            color: var(--accent);
+            flex-shrink: 0;
+        }
+        .event-desc {
+            color: var(--text);
+            font-size: 0.96rem;
+            line-height: 1.65;
+            margin-bottom: 18px;
+        }
+        .event-highlights {
+            background: rgba(234, 211, 162, 0.25);
+            border-left: 3px solid var(--accent);
+            padding: 10px 14px;
+            border-radius: 0 4px 4px 0;
+            font-size: 0.9rem;
+            color: var(--text);
+            margin-bottom: 22px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .event-highlights span strong {
+            color: var(--accent);
+        }
+        .event-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        /* EVENT MEDIA (OPTIONAL) */
+        .event-media {
+            width: 270px;
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+            background: #f5eedf;
+        }
+        .event-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform .5s ease;
+        }
+        .event-card:hover .event-media img {
+            transform: scale(1.05);
+        }
+        /* CONTAINER */
+        .events-container {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        /* EVENT CARD */
+        .event-card {
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column; /* Su mobile l'immagine sta sopra e il testo sotto */
+        }
+
+        @media (min-width: 768px) {
+            .event-card {
+                flex-direction: row; /* Su desktop foto a sinistra e contenuti a destra */
+            }
+        }
+
+        .event-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        /* FOTO GRANDE */
+        .event-image {
+            width: 100%;
+            min-height: 240px;
+            position: relative;
+            overflow: hidden;
+            background: #eee;
+        }
+
+        @media (min-width: 768px) {
+            .event-image {
+                width: 45%; /* Occupa quasi metà card su desktop */
+                min-height: auto;
+            }
+        }
+
+        .event-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .event-card:hover .event-image img {
+            transform: scale(1.03);
+        }
+
+        /* CONTENUTO (DATA, LUOGO, TITOLO) */
+        .event-info {
+            padding: 24px 28px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            flex-grow: 1;
+        }
+
+        .event-date-location {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 0.9rem;
+            color: var(--accent, #6c757d);
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .event-date, .event-location {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .event-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--text, #212529);
+            line-height: 1.35;
+            margin: 0;
+        }
+
+        /* PAST EVENTS */
+        .event-card.past-event {
+            opacity: 0.88;
+            border-color: #e5ded4;
+        }
+        .event-card.past-event .event-date-col {
+            background: #f2eee8;
+        }
+        .event-card.past-event .date-day {
+            color: #7d494d;
+        }
+
+        /* CALLOUT BANNER */
+        .callout-box {
+            background: #fffcf7;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 40px 32px;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .callout-box h3 {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+            color: var(--accent);
+            margin-bottom: 12px;
+        }
+        .callout-box p {
+            color: var(--text-light);
+            font-size: 1rem;
+            max-width: 600px;
+            margin: 0 auto 24px;
+        }
+
+        /* HLINE DIVIDER */
+        .hline {
+            width: 100%; overflow: hidden; line-height: 0; background: var(--gold);
+        }
+        .hline img {
+            display: block; width: 100%; height: 80px; object-fit: cover;
+            object-position: center;
+        }
+
+        /* FOOTER */
+        footer {
+            background: #1e1e1e; color: #b3b3b3; padding: 60px 0 30px;
+        }
+        .footer-grid {
+            display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px;
+        }
+        footer h4 {
+            color: #fff; font-size: .95rem; text-transform: uppercase;
+            letter-spacing: 1px; margin-bottom: 16px;
+        }
+        footer p, footer a { font-size: .88rem; line-height: 1.8; }
+        footer a:hover { color: #fff; }
+        footer .footer-logo {
+            font-family: var(--font-serif); font-size: 1.2rem; color: #fff; margin-bottom: 10px;
+        }
+        footer .footer-logo span { color: var(--accent); }
+        .footer-bottom {
+            margin-top: 40px; padding-top: 20px; border-top: 1px solid #333;
+            text-align: center; font-size: .82rem; color: #666;
+        }
+
+        /* FADE IN */
+        .fade-in { opacity: 0; transform: translateY(30px); transition: opacity .7s ease, transform .7s ease; }
+        .fade-in.show { opacity: 1; transform: translateY(0); }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .event-media { width: 220px; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 768px) {
+            .page-hero { padding: 130px 0 50px; }
+            .page-hero h1 { font-size: 2.5rem; }
+            .section { padding: 50px 0; }
+            .section-title { font-size: 2rem; }
+            .hamburger { display: flex; }
+            nav {
+                position: fixed; top: 80px; left: 0; width: 100%;
+                background: rgba(252,251,250,.97); backdrop-filter: blur(8px);
+                flex-direction: column; padding: 20px 24px; gap: 18px;
+                border-bottom: 1px solid var(--border);
+                transform: translateY(-120%); opacity: 0; transition: .35s ease;
+                pointer-events: none; align-items: flex-start;
+            }
+            nav.open { transform: translateY(0); opacity: 1; pointer-events: auto; }
+            nav a { font-size: 1rem; }
+            .hline img { height: 45px; }
+
+            .event-card {
+                flex-direction: column;
+            }
+            .event-media {
+                width: 100%;
+                height: 220px;
+                order: -1;
+            }
+            .event-date-col {
+                width: 100%;
+                flex-direction: row;
+                justify-content: flex-start;
+                gap: 12px;
+                padding: 12px 20px;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+            .date-day { font-size: 1.8rem; }
+            .date-month { font-size: 0.9rem; margin-top: 0; }
+            .date-year { font-size: 0.85rem; margin-top: 0; }
+            .event-content { padding: 22px 18px; }
+            .event-title { font-size: 1.35rem; }
+            .event-actions { flex-direction: column; align-items: stretch; }
+            .event-actions .btn { width: 100%; }
+        }
+        @media (max-width: 500px) {
+            .footer-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header id="header">
+        <div class="container nav-wrap">
+            <a href="index.html" class="logo-link">
+                <img src="logo.webp" alt="Altea Illotto" loading="lazy">
+                Altea Illotto
+            </a>
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+            <nav id="nav">
+                <a href="index.html#chi-siamo">Chi Siamo</a>
+                <a href="index.html#vigneto">Vigneto</a>
+                <a href="index.html#vini">I Vini</a>
+                <a href="index.html#scheda">Schede</a>
+                <a href="dove.html">Dove Trovarci</a>
+                <a href="galleria.html">Galleria</a>
+                <a href="index.html#contatti">Contatti</a>
+                <a href="https://archivio.alteaillotto.com" target="_blank" rel="noopener noreferrer">Archivio</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- PAGE HERO -->
+    <section class="page-hero">
+        <div class="container">
+            <h1>Eventi</h1>
+            <p>Qui potete trovare gli eventi dove potete trovarci.</p>
+        </div>
+    </section>
+
+    <div class="hline"><img src="alteaillotto_hline.webp" alt="" aria-hidden="true" loading="lazy"></div>
+
+    <!-- PROSSIMI EVENTI -->
+    <section class="section-dark" id="prossimi-eventi">
+        <div class="container">
+            <h2 class="section-title title-accent">In Programma</h2>
+            <p class="section-sub">I prossimi appuntamenti in cantina, in vigna e nelle manifestazioni dedicate ai vini naturali e artigianali.</p>
+
+            <div class="events-container">
+
+                <!-- ============================================================== -->
+                <!-- FORMATO STANDARD EVENTO:                                       -->
+                <!-- Per aggiungere un nuovo evento, copia l'intero blocco          -->
+                <!-- <article class="event-card fade-in"> ... </article>            -->
+                <!-- e incollalo qui. Modifica data, titolo, dettagli e testo.     -->
+                <!-- ============================================================== -->
+
+                <!-- EVENTO 1: DEGUSTAZIONE IN VIGNA -->
+                <article class="event-card fade-in">
+                    <!-- DATA EVENTO -->
+                    <div class="event-date-col">
+                        <span class="date-day">20</span>
+                        <span class="date-month">Giu</span>
+                        <span class="date-year">2026</span>
+                    </div>
+
+                    <!-- CORPO DELL'EVENTO -->
+                    <div class="event-content">
+                        <div>
+                            <div class="event-meta-top">
+                                <span class="event-tag tag-degustazione">In Cantina</span>
+                                <span class="event-status in-programma">Prossimo appuntamento</span>
+                            </div>
+
+                            <h3 class="event-title">Degustazione al Tramonto tra i Filari di Sibiola</h3>
+
+                            <div class="event-details-list">
+                                <div class="event-detail-item">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                    <span>Sabato 20 Giugno 2026 &bull; Ore 18:30 – 21:30</span>
+                                </div>
+                                <div class="event-detail-item">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                                    <span>Vigneto Altea Illotto — Loc. Sibiola, Serdiana (CA)</span>
+                                </div>
+                            </div>
+
+                            <p class="event-desc">
+                                Una serata tra i nostri filari ad alberello per assaporare il territorio nel momento più suggestivo del giorno. Visita guidata alla vigna, racconto della nostra filosofia biologica dal 1993 e degustazione guidata di quattro delle nostre etichette, abbinate a pani e formaggi artigianali locali.
+                            </p>
+
+                            <div class="event-highlights">
+                                <span><strong>Quota:</strong> 30€ a persona (calice da degustazione e assaggi inclusi)</span>
+                                <span><strong>Posti:</strong> Limitati a 25 partecipanti &bull; Prenotazione obbligatoria</span>
+                            </div>
+                        </div>
+
+                        <div class="event-actions">
+                            <a href="https://wa.me/393396773628?text=Buongiorno,%20vorrei%20prenotare%20per%20l'evento%20del%2020%20Giugno%20in%20vigna" class="btn" target="_blank" rel="noopener">Prenota su WhatsApp</a>
+                            <a href="mailto:info@alteaillotto.com?subject=Prenotazione%20Degustazione%2020%20Giugno" class="btn btn-outline">Scrivici via Email</a>
+                        </div>
+                    </div>
+
+                    <!-- IMMAGINE (OPZIONALE: Rimuovere se non necessaria) -->
+                    <div class="event-media">
+                        <img src="vignetoSibiola.webp" alt="Degustazione al Tramonto tra i Filari" loading="lazy">
+                    </div>
+                </article>
+                <div class="events-container">
+
+                    <!-- Card Evento -->
+                    <article class="event-card">
+                        <div class="event-image">
+                            <img src="vignetoSibiola.webp" alt="Nome dell'evento">
+                        </div>
+                        <div class="event-info">
+                            <div class="event-date-location">
+                                <span class="event-date">📅 15 Ottobre 2026</span>
+                                <span class="event-location">📍 Milano</span>
+                            </div>
+                            <h3 class="event-title">Titolo dell'evento semplice e diretto</h3>
+                        </div>
+                    </article>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <div class="hline"><img src="alteaillotto_hline.webp" alt="" aria-hidden="true" loading="lazy"></div>
+
+    <!-- EVENTI PASSATI / ARCHIVIO -->
+    <section class="section" id="eventi-passati">
+        <div class="container">
+            <h2 class="section-title title-accent">Archivio Eventi</h2>
+            <p class="section-sub">Gli incontri, le manifestazioni e le degustazioni passate a cui abbiamo preso parte.</p>
+
+            <div class="events-container">
+
+                <!-- EVENTO PASSATO ESEMPIO -->
+                <article class="event-card past-event fade-in">
+                    <div class="event-date-col">
+                        <span class="date-day">28</span>
+                        <span class="date-month">Set</span>
+                        <span class="date-year">2025</span>
+                    </div>
+
+                    <div class="event-content">
+                        <div>
+                            <div class="event-meta-top">
+                                <span class="event-tag">Vendemmia</span>
+                                <span class="event-status concluso">Evento Concluso</span>
+                            </div>
+
+                            <h3 class="event-title">Vendemmia Aperta a Serdiana — Racconto e Degustazione del Mosto</h3>
+
+                            <div class="event-details-list">
+                                <div class="event-detail-item">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                    <span>Domenica 28 Settembre 2025 &bull; Ore 10:00 – 16:00</span>
+                                </div>
+                                <div class="event-detail-item">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                                    <span>Cantina e Vigneto Altea Illotto, Serdiana</span>
+                                </div>
+                            </div>
+
+                            <p class="event-desc">
+                                Una giornata dedicata alla raccolta manuale delle uve e all'avvio delle fermentazioni spontanee. Ringraziamo tutti gli amici e gli appassionati che hanno condiviso con noi questo momento fondamentale dell'annata viticola.
+                            </p>
+                        </div>
+
+                        <div class="event-actions">
+                            <a href="galleria.html" class="btn btn-outline">Guarda le foto in Galleria</a>
+                        </div>
+                    </div>
+
+                    <div class="event-media">
+                        <img src="vigna/alberelli.webp" alt="Vendemmia a Serdiana" loading="lazy">
+                    </div>
+                </article>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <div class="footer-logo"><span>Altea</span> Illotto</div>
+                    <p>Vitigni di territorio, fermentazioni spontanee.<br>Vini artigianali, nati a Serdiana, località Sibiola.</p>
+                </div>
+                <div>
+                    <h4>Link</h4>
+                    <p><a href="index.html">Home</a></p>
+                    <p><a href="dove.html">Dove Trovarci</a></p>
+                    <p><a href="visitateci.html">Visite</a></p>
+                    <p><a href="eventi.html">Eventi</a></p>
+                    <p><a href="galleria.html">Galleria</a></p>
+                </div>
+                <div>
+                    <h4>Contatti</h4>
+                    <p><strong>Via Don Minzoni, 12</strong><br>Serdiana (CA)</p>
+                    <p><a href="mailto:info@alteaillotto.com">info@alteaillotto.com</a></p>
+                    <p><a href="tel:+393396773628">+39 339 6773 628</a></p>
+                </div>
+                <div>
+                    <h4>Orari Visite</h4>
+                    <p>Su appuntamento</p>
+                    <p>Scrivici per organizzare<br>una degustazione</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2026 Altea Illotto — Azienda Agricola Artigianale. Tutti i diritti riservati.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Hamburger menu mobile
+        const hamburger = document.getElementById('hamburger');
+        const nav = document.getElementById('nav');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            nav.classList.toggle('open');
+        });
+        document.querySelectorAll('nav a').forEach(a => {
+            a.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                nav.classList.remove('open');
+            });
+        });
+
+        // Header scroll effect
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            header.classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        // Fade-in on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show');
+                }
+            });
+        }, { threshold: 0.15 });
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
